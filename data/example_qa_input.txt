@@ -1,0 +1,2 @@
+Q21	who is the president of the united states?	when is the next presidential election?
+Q34	who is the father of information retrieval research?
