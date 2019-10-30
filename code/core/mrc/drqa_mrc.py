@@ -1,13 +1,9 @@
 from abc import ABC, abstractmethod
-from drqa.reader import Predictor
+import os, sys
 
 from code.core.retrieval.doc import Document
-
-import os
-import sys
-
+from drqa.reader import Predictor
 import drqa
-
 
 
 class MRC(ABC):

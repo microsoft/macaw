@@ -21,7 +21,7 @@ class Retrieval(ABC):
 
 	def get_results(self, conv_list):
 		query = self.query_generation.get_query(conv_list)
-		print('Query:', query)
+		self.params['logger'].info('New query: ' + query)
 		return self.retrieve(query)
 
 
@@ -40,12 +40,7 @@ class Indri(Retrieval):
 		for int_doc_id, score in int_results:
 			# ext_doc_id, content_term_id = self.index.document(int_doc_id)
 			# index_content = [self.id2term[term_id] if term_id> 0 else 'UNK' for term_id in content_term_id]
-			content = subprocess.run([os.path.join(self.indri_path, 'dumpindex/dumpindex'), self.params['index'],
-										  'dt', str(int_doc_id)], stdout=subprocess.PIPE).stdout.decode('UTF-8')
-			if self.params['text_format'] == 'trectext':
-				doc = get_trec_doc(content)
-			else:
-				raise Exception('The requested text format is not supported!')
+			doc = self.get_doc_from_index(int_doc_id)[0]
 			doc.score = score
 			doc.id = str(int_doc_id)
 			results.append(doc)
@@ -68,6 +63,7 @@ class BingWebSearch(Retrieval):
 		self.subscription_key = self.params['bing_key']
 		self.bing_api_url = 'https://api.cognitive.microsoft.com/bing/v7.0/search'
 		self.header = {"Ocp-Apim-Subscription-Key": self.subscription_key}
+		params['logger'].warning('There is a maximum number of transactions per second for the Bing API.')
 
 	def retrieve(self, query):
 		params = {"q": query, "textDecorations": True, "textFormat": "HTML"}
@@ -80,10 +76,8 @@ class BingWebSearch(Retrieval):
 			title = search_results['webPages']['value'][i]['name']
 			text = search_results['webPages']['value'][i]['snippet']
 			text = ' '.join(BeautifulSoup(text, "html.parser").stripped_strings)
-			print('************************ ', id)
 			headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0'}
 			text = html_to_clean_text(requests.get(id, headers=headers).content)
-			# print (response.content)
 			score = 10 - i # this is not a score returned by Bing
 			results.append(Document(id, title, text, score))
 		return results
