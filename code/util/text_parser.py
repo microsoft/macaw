@@ -2,8 +2,12 @@ from xml.etree import cElementTree as ElementTree
 from bs4 import BeautifulSoup
 import re
 
+
 class XmlListConfig(list):
     def __init__(self, aList):
+        """
+        THIS CLASS IS DEPRECATED!
+        """
         super().__init__()
         for element in aList:
             if element:
@@ -19,6 +23,9 @@ class XmlListConfig(list):
 
 class XmlDictConfig(dict):
     def __init__(self, parent_element):
+        """
+        THIS CLASS IS DEPRECATED!
+        """
         super().__init__()
         if parent_element.items():
             self.update(dict(parent_element.items()))
@@ -38,18 +45,32 @@ class XmlDictConfig(dict):
 
 
 def xml_text_to_dict(xml_text):
+    """
+    THIS CLASS IS DEPRECATED!
+    """
     print(xml_text)
     root = ElementTree.XML(xml_text)
     return XmlDictConfig(root)
 
 
 def xml_file_to_dict(xml_file):
+    """
+    THIS CLASS IS DEPRECATED!
+    """
     tree = ElementTree.parse(xml_file)
     root = tree.getroot()
     return XmlDictConfig(root)
 
 
 def html_to_clean_text(html):
+    """
+    Converting an HTML document to clean text.
+    Args:
+        html(str): The content of an HTML web page.
+
+    Returns:
+        A str containing the clean content of the web page.
+    """
     def visible(element):
         if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
             return False
