@@ -1,5 +1,6 @@
 from code.core import actions
 
+
 class RequestDispatcher:
     def __init__(self, params):
         self.params = params
