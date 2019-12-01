@@ -1,3 +1,9 @@
+"""
+The abstract interface class.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from abc import ABC, abstractmethod
 
 

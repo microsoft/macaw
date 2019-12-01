@@ -1,10 +1,15 @@
-import logging
+"""
+The Telegram bot (supports interactive multi-modal interactions with different devices).
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 import os
-from pydub import AudioSegment
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 import tempfile
 import traceback
+
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
 from code import util
 from code.util.msg import Message
@@ -14,10 +19,7 @@ from code.interface.interface import Interface
 class TelegramBot(Interface):
     def __init__(self, params):
         super().__init__(params)
-        # Enable logging
-        logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                            level=logging.INFO)
-        self.logger = logging.getLogger(__name__)
+        self.logger = self.params['logger']
 
         """Start the bot."""
         # Create the Updater and pass it your bot's token.
@@ -29,8 +31,8 @@ class TelegramBot(Interface):
         self.dp = self.updater.dispatcher
 
         # on different commands - answer in Telegram
-        self.dp.add_handler(CommandHandler("start", self.start))
-        self.dp.add_handler(CommandHandler("help", self.help))
+        self.dp.add_handler(CommandHandler('start', self.start))
+        self.dp.add_handler(CommandHandler('help', self.help))
 
         # on noncommand i.e message - echo the message on Telegram
         self.dp.add_handler(MessageHandler(Filters.text, self.request_handler))

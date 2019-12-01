@@ -1,3 +1,9 @@
+"""
+The retrieval module init.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from code.core.retrieval import search_engine, query_generation
 
 
@@ -26,10 +32,12 @@ def get_retrieval_model(params):
                                     'indri_path': params['search_engine_path'],
                                     'index': params['col_index'],
                                     'text_format': params['col_text_format'],
-                                    'results_requested': params['results_requested']})
+                                    'results_requested': params['results_requested'],
+                                    'logger': params['logger']})
     elif params['search_engine'] == 'bing':
         return search_engine.BingWebSearch({'query_generation': q_generation,
                                             'bing_key': params['bing_key'],
-                                            'results_requested': params['results_requested']})
+                                            'results_requested': params['results_requested'],
+                                            'logger': params['logger']})
     else:
         raise Exception('The requested retrieval model does not exist!')

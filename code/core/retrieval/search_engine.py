@@ -1,3 +1,9 @@
+"""
+All retrieval models / search engines.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup
 import subprocess

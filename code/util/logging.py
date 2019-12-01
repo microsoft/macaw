@@ -1,3 +1,9 @@
+"""
+The internal logger.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 import logging
 
 

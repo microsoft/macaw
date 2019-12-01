@@ -1,8 +1,13 @@
+"""
+The main file for an experimental CIS with batch interaction support.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from code.cis import CIS
 from code.core import mrc, retrieval
 from code.core.input_processing.action_detection import RequestDispatcher
 from code.core.output_processing.output_selection import output_processing
-
 
 
 class ConvSearch(CIS):

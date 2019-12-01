@@ -1,3 +1,9 @@
+"""
+The CIS class.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from abc import ABC, abstractmethod
 from func_timeout import func_timeout, FunctionTimedOut
 
@@ -8,6 +14,13 @@ from code.util.msg import Message
 
 class CIS(ABC):
     def __init__(self, params):
+        """
+        A Conversational Information Seeking class containing some abstract methods. Each CIS application is expected to
+        be inherited from this class.
+
+        Args:
+            params(dict): A dict containing some parameters.
+        """
         self.params = params
         if params['mode'] == 'live':
             self.params['live_request_handler'] = self.live_request_handler

@@ -5,6 +5,12 @@ from abc import ABC, abstractmethod
 import drqa
 from drqa.reader import Predictor
 
+"""
+A wrapper to the DrQA model from FAIR: https://github.com/facebookresearch/DrQA 
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from code.core.retrieval.doc import Document
 
 

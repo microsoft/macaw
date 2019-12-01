@@ -1,3 +1,9 @@
+"""
+The FileIO interface (for experimental batch interactions).
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 import time
 
 from code.interface.interface import Interface

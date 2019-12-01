@@ -1,3 +1,9 @@
+"""
+The interactive CIS main file.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from code.cis import CIS
 from code.core import mrc, retrieval
 from code.core.input_processing.action_detection import RequestDispatcher
@@ -38,7 +44,7 @@ class ConvQA(CIS):
         Returns:
             output_msg(Message): Returns an output message that should be sent to the UI to be presented to the user.
         """
-        print(conv_list)
+        self.logger.info(conv_list)
         dispatcher_output = self.request_dispatcher.dispatch(conv_list)
         output_msg = self.output_selection.get_output(conv_list, dispatcher_output)
         return output_msg

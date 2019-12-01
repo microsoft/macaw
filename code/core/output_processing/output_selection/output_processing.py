@@ -1,8 +1,14 @@
-from abc import ABC, abstractmethod
-import time
+"""
+The output post processing unit.
 
-from code.util.msg import Message
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
+from abc import ABC, abstractmethod
+
 from code import util
+from code.util.msg import Message
+
 
 class OutputProcessing(ABC):
     @abstractmethod

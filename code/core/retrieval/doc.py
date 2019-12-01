@@ -1,3 +1,8 @@
+"""
+The document class and some util functions useful for retrieval result list.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
 
 class Document:
     def __init__(self, id, title, text, score):

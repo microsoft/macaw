@@ -1,5 +1,12 @@
-import time
+"""
+Some util functions.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 import json
+import time
+
 from stanfordcorenlp import StanfordCoreNLP
 
 

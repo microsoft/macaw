@@ -1,10 +1,18 @@
+"""
+Speech recognition and generation and some utility functions.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from abc import ABC, abstractmethod
+import os
+import tempfile
+
 import azure.cognitiveservices.speech as speechsdk
 import speech_recognition as sr
 from google.cloud import texttospeech
-import os
-import tempfile
 from pydub import AudioSegment
+
 
 def mp3_to_ogg(input_file_name): # caller should delete the file afterwards.
     ogg_file = tempfile.NamedTemporaryFile(delete=False)
@@ -28,6 +36,7 @@ class ASR(ABC): # Automatic Speech Recognition
     def speech_to_text(self, file_path):
         pass
 
+
 class ASG(ABC): # Automatic Speech Generation
     def __init__(self, params):
         self.params = params
@@ -35,7 +44,6 @@ class ASG(ABC): # Automatic Speech Generation
     @abstractmethod
     def text_to_speech(self, text):
         pass
-
 
 
 # NOTE: AZURE ASR FAILED IN OUR EXPERIMENTS.

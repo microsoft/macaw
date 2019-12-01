@@ -1,3 +1,9 @@
+"""
+The MRC module init.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from code.core.mrc import drqa_mrc
 
 

@@ -1,3 +1,9 @@
+"""
+The request dispatcher module.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from code.core import actions
 
 

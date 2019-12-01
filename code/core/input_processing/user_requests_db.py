@@ -1,3 +1,9 @@
+"""
+The conversation database (MongoDB).
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from pymongo import MongoClient
 
 from code import util

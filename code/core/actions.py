@@ -1,3 +1,9 @@
+"""
+All actions supported by CIS.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from abc import ABC, abstractmethod
 
 

@@ -1,9 +1,16 @@
+"""
+The STDIO interface for interactive CIS.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 import time
 import traceback
 
 from code import util
 from code.interface.interface import Interface
 from code.util.msg import Message
+
 
 class StdioInterface(Interface):
     def __init__(self, params):

@@ -1,3 +1,9 @@
+"""
+The interface module init.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from code.interface import speech_recognition, telegram, stdio, fileio
 
 

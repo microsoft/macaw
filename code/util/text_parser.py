@@ -1,6 +1,13 @@
-from xml.etree import cElementTree as ElementTree
-from bs4 import BeautifulSoup
+"""
+Some text parser for document cleaning.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 import re
+
+from bs4 import BeautifulSoup
+from xml.etree import cElementTree as ElementTree
 
 
 class XmlListConfig(list):

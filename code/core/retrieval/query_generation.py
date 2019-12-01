@@ -1,3 +1,9 @@
+"""
+The query generation model for search engine.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from abc import ABC, abstractmethod
 import string
 
