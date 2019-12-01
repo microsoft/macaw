@@ -68,7 +68,7 @@ if __name__ == '__main__':
                  'user_requests_db_name': 'macaw_test'}
 
     # These are interface parameters. They are interface specific.
-    interface_params = {'interface': 'telegram',  # interface can be 'telegram' or 'stdio' for live mode, and 'fileio'
+    interface_params = {'interface': 'stdio',  # interface can be 'telegram' or 'stdio' for live mode, and 'fileio'
                                                   # for exp mode.
                         'bot_token': '920831379:AAFt_jr7bK4sFuv4FJ1hWIWqABoEa9w9708',  # Telegram bot token.
                         'asr_model': 'google',  # The API used for speech recognition.
@@ -77,12 +77,18 @@ if __name__ == '__main__':
 
     # These are parameters used by the retrieval model.
     retrieval_params = {'query_generation': 'simple',  # the model that generates a query from a conversation history.
+                        'use_coref': True,  # True, if query generator can use coreference resolution, otherwise False.
                         'search_engine': 'indri',  # the search engine. It can be either 'indri' or 'bing'.
                         'bing_key': '7a9b8a186d414184abecb3ac6ef7d296',  # Bing API key
                         'search_engine_path': '/mnt/e/indri-5.11/',  # The path to the indri toolkit.
                         'col_index': '/mnt/e/indri-index/robust_indri/indri_index',  # The path to the indri index.
                         'col_text_format': 'trectext',  # collection text format. Standard 'trectext' is only supported.
                         'results_requested': 3}  # Maximum number of docs that should be retrieved by search engine.
+    # Note: If you want to have a re-ranking model (e.g., learning to rank), you just need to simply extend the class
+    # core.retrieval.search_engine.ReRanker and implement the method 'rerank'. Then simply add a 'reranker' parameter to
+    # retrieval_params that points to an instance of your favorite ReRanker class. If there is a 'reranker' parameter in
+    # retrieval_params, the retrieval model automatically calls the re-ranking method. For more details, see the method
+    # 'get_results' in class core.retrieval.search_engine.Retrieval.
 
     # These are parameters used by the machine reading comprehension model.
     mrc_params = {'mrc': 'drqa',  # MRC model.
