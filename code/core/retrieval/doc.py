@@ -4,6 +4,11 @@ The document class and some util functions useful for retrieval result list.
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
+import re
+
+import justext
+
+
 class Document:
     def __init__(self, id, title, text, score):
         """
@@ -46,19 +51,33 @@ def get_recursive_content_as_str(doc):
 #     return Document(id, title, text, 0)
 
 
-def get_trec_doc(trec_doc):
+def get_trec_doc(trec_doc, format='trectext'):
     """
-    This method returns a Document given a standard trectext document. NOTE: There are much better parsers for TREC
-    documents. This simple function works in most cases, but there might be some cases that require better parsers
-    (e.g., when there is a HTML-type comments in the text, or some other tags other than <P>.)
+    This method returns a Document given a standard trectext or trecweb document. NOTE: There are much better parsers
+    for TREC documents.
     Args:
-        trec_doc(str): The document content with the trectext format.
+        trec_doc(str): The document content with the trectext or trecweb format.
+        format(str): The document format. Either 'trectext' or 'trecweb'. The default value is 'trectext'.
 
     Returns:
         An instance of Document. Note that the score is assigned to 0 and should be set later.
     """
-    id = trec_doc[trec_doc.find('<DOCNO>') + len('<DOCNO>'):trec_doc.find('</DOCNO>')].strip()
+    trec_doc_lower = trec_doc.lower()
+    id = trec_doc[trec_doc_lower.find('<docno>') + len('<docno>'):trec_doc_lower.find('</docno>')].strip()
     title = id  # for some presentation reasons, the title of document is set to ids ID.
-    text = trec_doc[trec_doc.find('<TEXT>') + len('<TEXT>'):trec_doc.find('</TEXT>')]\
-        .replace('<P>', ' ').replace('</P>', '\n').strip()
-    return Document(id, title, text, 0.)
+    if format == 'trectext':
+        text = trec_doc[trec_doc_lower.find('<text>') + len('<text>'):trec_doc_lower.find('</text>')]
+    elif format == 'trecweb':
+        text = trec_doc[trec_doc_lower.find('<body>') + len('<body>'):trec_doc_lower.find('</body>')]
+    else:
+        raise Exception('Undefined TREC document format. Supported document formats are trectext and trecweb')
+    text = re.sub('\s+', ' ', text).strip()  # removing multiple consecutive whitespaces
+
+    # Removing other tags in the text, e.g., <p>.
+    clean_text_list = []
+    paragraphs = justext.justext(text, justext.get_stoplist("English"))
+    for paragraph in paragraphs:
+        if not paragraph.is_boilerplate:
+            clean_text_list.append(paragraph.text)
+
+    return Document(id, title, '\n'.join(clean_text_list), 0.)

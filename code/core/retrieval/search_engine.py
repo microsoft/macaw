@@ -5,7 +5,6 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
 from abc import ABC, abstractmethod
-from bs4 import BeautifulSoup
 import subprocess
 import pyndri
 import os
@@ -191,7 +190,6 @@ class BingWebSearch(Retrieval):
 			id = search_results['webPages']['value'][i]['url']
 			title = search_results['webPages']['value'][i]['name']
 			text = search_results['webPages']['value'][i]['snippet']
-			text = ' '.join(BeautifulSoup(text, "html.parser").stripped_strings)
 			headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0'}
 			text = html_to_clean_text(requests.get(id, headers=headers).content)
 			score = 10 - i # this is not a score returned by Bing

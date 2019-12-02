@@ -4,9 +4,7 @@ Some text parser for document cleaning.
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
-import re
-
-from bs4 import BeautifulSoup
+import justext
 from xml.etree import cElementTree as ElementTree
 
 
@@ -69,6 +67,27 @@ def xml_file_to_dict(xml_file):
     return XmlDictConfig(root)
 
 
+# def html_to_clean_text(html):
+#     """
+#     Converting an HTML document to clean text.
+#     Args:
+#         html(str): The content of an HTML web page.
+#
+#     Returns:
+#         A str containing the clean content of the web page.
+#     """
+#     def visible(element):
+#         if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
+#             return False
+#         elif re.match('<!--.*-->', str(element.encode('utf-8'))):
+#             return False
+#         return True
+#
+#     soup = BeautifulSoup(html, features='html.parser') #.stripped_strings
+#     data = soup.findAll(text=True)
+#     result = filter(visible, data)
+#     return ' '.join(result)
+
 def html_to_clean_text(html):
     """
     Converting an HTML document to clean text.
@@ -78,14 +97,9 @@ def html_to_clean_text(html):
     Returns:
         A str containing the clean content of the web page.
     """
-    def visible(element):
-        if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
-            return False
-        elif re.match('<!--.*-->', str(element.encode('utf-8'))):
-            return False
-        return True
-
-    soup = BeautifulSoup(html, features='html.parser') #.stripped_strings
-    data = soup.findAll(text=True)
-    result = filter(visible, data)
-    return ' '.join(result)
+    paragraphs = justext.justext(html, justext.get_stoplist("English"))
+    clean_text_list = []
+    for paragraph in paragraphs:
+        if not paragraph.is_boilerplate:
+            clean_text_list.append(paragraph.text)
+    return '\n'.join(clean_text_list)
