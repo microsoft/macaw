@@ -36,6 +36,9 @@ class UserRequestsDB:
             res = res.limit(max_count)
         return self.dict_list_to_msg_list(res)
 
+    def close(self):
+        self.client.close()
+
     @staticmethod
     def dict_list_to_msg_list(msg_dict_list):
         return [Message.from_dict(msg_dict) for msg_dict in msg_dict_list]

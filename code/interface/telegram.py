@@ -126,6 +126,8 @@ class TelegramBot(Interface):
 
     def result_presentation(self, response_msg, params):
         try:
+            if response_msg is None:
+                return
             update = params['update']
             if response_msg.msg_info['msg_type'] == 'text':
                 if update.message is not None:
@@ -159,6 +161,9 @@ class TelegramBot(Interface):
         """Log Errors caused by Updates."""
         self.logger.warning('Update "%s" caused error "%s"', update, context.error)
 
+    def send_msg(self, chat_id, msg_text):
+        self.updater.bot.sendMessage(chat_id=chat_id, text=msg_text)
+
     def run(self):
         # Start the Bot
         self.updater.start_polling()
@@ -166,5 +171,4 @@ class TelegramBot(Interface):
         # SIGTERM or SIGABRT. This should be used most of the time, since
         # start_polling() is non-blocking and will stop the bot gracefully.
         self.updater.idle()
-from os import path
 
