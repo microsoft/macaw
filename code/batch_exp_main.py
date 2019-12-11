@@ -20,9 +20,7 @@ class ConvSearch(CIS):
 
     def request_handler_func(self, conv_list):
         # identify action
-        print(conv_list)
         dispatcher_output = self.request_dispatcher.dispatch(conv_list)
-        print('^^^^^^^^^', dispatcher_output)
 
         output_msg = self.output_selection.get_output(conv_list, dispatcher_output)
         return output_msg

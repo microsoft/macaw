@@ -7,10 +7,9 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 import multiprocessing
 
 from code import interface
-from code.cis import CIS
-from code.core import mrc, retrieval
+from code.core import retrieval
 from code.core.input_processing.action_detection import RequestDispatcher
-from code.core.input_processing.user_requests_db import UserRequestsDB
+from code.core.interaction_handler.user_requests_db import InteractionDB
 from code.core.output_processing.output_selection import output_processing
 from code.util.logging import Logger
 
@@ -51,9 +50,9 @@ class Seeker:
         Returns:
             output_msg(Message): Returns an output message that should be sent to the UI to be presented to the user.
         """
-        msg_db = UserRequestsDB(host=self.params['user_requests_db_host'],
-                                port=self.params['user_requests_db_port'],
-                                dbname=self.params['user_requests_db_name'])
+        msg_db = InteractionDB(host=self.params['user_requests_db_host'],
+                               port=self.params['user_requests_db_port'],
+                               dbname=self.params['user_requests_db_name'])
         msg_db.insert_one(msg)
         msg_db.close()
         self.logger.info(msg)
@@ -111,9 +110,9 @@ class Wizard:
         Returns:
             output_msg(Message): Returns an output message that should be sent to the UI to be presented to the user.
         """
-        msg_db = UserRequestsDB(host=self.params['user_requests_db_host'],
-                                port=self.params['user_requests_db_port'],
-                                dbname=self.params['user_requests_db_name'])
+        msg_db = InteractionDB(host=self.params['interaction_db_host'],
+                               port=self.params['interaction_db_port'],
+                               dbname=self.params['interaction_db_name'])
         msg_db.insert_one(msg)
         self.logger.info(msg)
 

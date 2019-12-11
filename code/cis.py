@@ -5,10 +5,10 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
 from abc import ABC, abstractmethod
-from func_timeout import func_timeout, FunctionTimedOut
+from func_timeout import FunctionTimedOut
 
 from code import interface, util
-from code.core.input_processing.user_requests_db import UserRequestsDB
+from code.core.interaction_handler.user_requests_db import InteractionDB
 from code.util.msg import Message
 
 
@@ -24,9 +24,9 @@ class CIS(ABC):
         self.params = params
         if params['mode'] == 'live':
             self.params['live_request_handler'] = self.live_request_handler
-            self.msg_db = UserRequestsDB(host=self.params['user_requests_db_host'],
-                                         port=self.params['user_requests_db_port'],
-                                         dbname=self.params['user_requests_db_name'])
+            self.msg_db = InteractionDB(host=self.params['interaction_db_host'],
+                                        port=self.params['interaction_db_port'],
+                                        dbname=self.params['interaction_db_name'])
         elif params['mode'] == 'exp':
             self.params['experimental_request_handler'] = self.request_handler_func
 

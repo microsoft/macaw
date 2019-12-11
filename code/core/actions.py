@@ -5,7 +5,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
 from abc import ABC, abstractmethod
-from func_timeout import func_timeout
+from func_timeout import func_timeout, FunctionTimedOut
 import traceback
 
 
@@ -102,6 +102,8 @@ def run_action(action, conv_list, params, return_dict):
 
     try:
         return_dict[action] = func_timeout(params['timeout'], action_func, args=[conv_list, params])
+    except FunctionTimedOut:
+        params['logger'].warning('The action "%s" did not respond in %d seconds.', action, params['timeout'])
     except Exception:
         return_dict[action] = None
         traceback.print_exc()

@@ -1,5 +1,5 @@
 """
-The conversation database (MongoDB).
+The conversation (or interaction) database implemented using MongoDB.
 
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
@@ -10,11 +10,11 @@ from code import util
 from code.util.msg import Message
 
 
-class UserRequestsDB:
+class InteractionDB:
     def __init__(self, host, port, dbname):
         self.client = MongoClient(host, port)
         self.db = self.client[dbname]
-        self.col = self.db['user_requests']
+        self.col = self.db['macaw_msgs']
 
     def insert_one(self, msg):
         if msg.user_id is None or msg.text is None or msg.timestamp is None or msg.user_interface is None:

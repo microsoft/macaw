@@ -63,9 +63,9 @@ if __name__ == '__main__':
 
     # These are required database parameters if the mode is 'live'. The host and port of the machine hosting the
     # database, as well as the database name.
-    db_params = {'user_requests_db_host': 'localhost',
-                 'user_requests_db_port': 27017,
-                 'user_requests_db_name': 'macaw_test'}
+    db_params = {'interaction_db_host': 'localhost',
+                 'interaction_db_port': 27017,
+                 'interaction_db_name': 'macaw_test'}
 
     # These are interface parameters. They are interface specific.
     interface_params = {'interface': 'telegram',  # interface can be 'telegram' or 'stdio' for live mode, and 'fileio'
