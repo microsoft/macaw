@@ -6,12 +6,12 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 
 import multiprocessing
 
-from code import interface
-from code.core import retrieval
-from code.core.input_handler.action_detection import RequestDispatcher
-from code.core.interaction_handler.user_requests_db import InteractionDB
-from code.core.output_handler import naive_output_selection
-from code.util.logging import Logger
+from macaw import interface
+from macaw.core import retrieval
+from macaw.core.input_handler.action_detection import RequestDispatcher
+from macaw.core.interaction_handler.user_requests_db import InteractionDB
+from macaw.core.output_handler import naive_output_selection
+from macaw.util.logging import Logger
 
 
 class Seeker:

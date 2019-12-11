@@ -11,8 +11,8 @@ import subprocess
 
 import pyndri
 
-from code.core.retrieval.doc import get_trec_doc, Document
-from code.util.text_parser import html_to_clean_text
+from macaw.core.retrieval.doc import get_trec_doc, Document
+from macaw.util.text_parser import html_to_clean_text
 
 
 class Retrieval(ABC):

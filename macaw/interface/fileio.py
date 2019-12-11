@@ -6,8 +6,8 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 
 import time
 
-from code.interface.interface import Interface
-from code.core.interaction_handler.msg import Message
+from macaw.interface.interface import Interface
+from macaw.core.interaction_handler.msg import Message
 
 
 class FileioInterface(Interface):

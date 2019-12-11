@@ -4,7 +4,7 @@ The retrieval module init.
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
-from code.core.retrieval import search_engine, query_generation
+from macaw.core.retrieval import search_engine, query_generation
 
 
 def get_retrieval_model(params):

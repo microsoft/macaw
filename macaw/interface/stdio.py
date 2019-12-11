@@ -7,9 +7,9 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 import time
 import traceback
 
-from code import util
-from code.interface.interface import Interface
-from code.core.interaction_handler.msg import Message
+from macaw import util
+from macaw.interface.interface import Interface
+from macaw.core.interaction_handler.msg import Message
 
 
 class StdioInterface(Interface):

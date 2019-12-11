@@ -7,9 +7,9 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 from abc import ABC, abstractmethod
 from func_timeout import FunctionTimedOut
 
-from code import interface, util
-from code.core.interaction_handler.user_requests_db import InteractionDB
-from code.core.interaction_handler.msg import Message
+from macaw import interface, util
+from macaw.core.interaction_handler.user_requests_db import InteractionDB
+from macaw.core.interaction_handler.msg import Message
 
 
 class CIS(ABC):

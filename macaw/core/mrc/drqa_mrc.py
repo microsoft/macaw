@@ -11,7 +11,7 @@ A wrapper to the DrQA model from FAIR: https://github.com/facebookresearch/DrQA
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
-from code.core.retrieval.doc import Document
+from macaw.core.retrieval.doc import Document
 
 
 class MRC(ABC):

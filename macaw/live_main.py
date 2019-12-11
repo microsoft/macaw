@@ -4,11 +4,11 @@ The interactive CIS main file.
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
-from code.cis import CIS
-from code.core import mrc, retrieval
-from code.core.input_handler.action_detection import RequestDispatcher
-from code.core.output_handler import naive_output_selection
-from code.util.logging import Logger
+from macaw.cis import CIS
+from macaw.core import mrc, retrieval
+from macaw.core.input_handler.action_detection import RequestDispatcher
+from macaw.core.output_handler import naive_output_selection
+from macaw.util.logging import Logger
 
 
 class ConvQA(CIS):

@@ -11,9 +11,9 @@ import traceback
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
-from code import util
-from code.core.interaction_handler.msg import Message
-from code.interface.interface import Interface
+from macaw import util
+from macaw.core.interaction_handler.msg import Message
+from macaw.interface.interface import Interface
 
 
 class TelegramBot(Interface):

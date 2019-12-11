@@ -4,7 +4,7 @@ The MRC module init.
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
-from code.core.mrc import drqa_mrc
+from macaw.core.mrc import drqa_mrc
 
 
 def get_mrc_model(params):
