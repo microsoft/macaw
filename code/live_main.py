@@ -7,7 +7,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 from code.cis import CIS
 from code.core import mrc, retrieval
 from code.core.input_handler.action_detection import RequestDispatcher
-from code.core.output_handler import output_processing
+from code.core.output_handler import naive_output_selection
 from code.util.logging import Logger
 
 
@@ -30,7 +30,7 @@ class ConvQA(CIS):
         self.qa = mrc.get_mrc_model(params=self.params)
         self.params['actions'] = {'retrieval': self.retrieval, 'qa': self.qa}
         self.request_dispatcher = RequestDispatcher(self.params)
-        self.output_selection = output_processing.NaiveOutputProcessing({})
+        self.output_selection = naive_output_selection.NaiveOutputProcessing({})
 
     def request_handler_func(self, conv_list):
         """

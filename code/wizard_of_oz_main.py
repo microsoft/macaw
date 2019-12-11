@@ -10,7 +10,7 @@ from code import interface
 from code.core import retrieval
 from code.core.input_handler.action_detection import RequestDispatcher
 from code.core.interaction_handler.user_requests_db import InteractionDB
-from code.core.output_handler import output_processing
+from code.core.output_handler import naive_output_selection
 from code.util.logging import Logger
 
 
@@ -36,7 +36,7 @@ class Seeker:
 
         self.retrieval = retrieval.get_retrieval_model(params=self.params)
         self.request_dispatcher = RequestDispatcher({'retrieval': self.retrieval})
-        self.output_selection = output_processing.NaiveOutputProcessing({})
+        self.output_selection = naive_output_selection.NaiveOutputProcessing({})
 
     def live_request_handler(self, msg):
         """
@@ -96,7 +96,7 @@ class Wizard:
 
         self.retrieval = retrieval.get_retrieval_model(params=self.params)
         self.request_dispatcher = RequestDispatcher({'retrieval': self.retrieval})
-        self.output_selection = output_processing.NaiveOutputProcessing({})
+        self.output_selection = naive_output_selection.NaiveOutputProcessing({})
 
     def live_request_handler(self, msg):
         """

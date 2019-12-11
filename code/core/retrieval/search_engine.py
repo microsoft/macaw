@@ -5,10 +5,11 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
 from abc import ABC, abstractmethod
-import subprocess
-import pyndri
 import os
 import requests
+import subprocess
+
+import pyndri
 
 from code.core.retrieval.doc import get_trec_doc, Document
 from code.util.text_parser import html_to_clean_text

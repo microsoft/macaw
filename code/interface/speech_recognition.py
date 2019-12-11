@@ -8,7 +8,6 @@ from abc import ABC, abstractmethod
 import os
 import tempfile
 
-import azure.cognitiveservices.speech as speechsdk
 import speech_recognition as sr
 from google.cloud import texttospeech
 from pydub import AudioSegment
@@ -44,37 +43,6 @@ class ASG(ABC): # Automatic Speech Generation
     @abstractmethod
     def text_to_speech(self, text):
         pass
-
-
-# NOTE: AZURE ASR FAILED IN OUR EXPERIMENTS.
-class AzureASR(ASR):
-    def __init__(self, params):
-        super().__init__(params)
-        self.speech_config = speechsdk.SpeechConfig(subscription=self.params['speech_key'],
-                                                    region=self.params['service_region'])
-
-    def speech_to_text(self, file_path):
-        print(file_path)
-        audio_config = speechsdk.audio.AudioConfig(filename=file_path)
-        speech_recognizer = speechsdk.SpeechRecognizer(speech_config=self.speech_config, audio_config=audio_config)
-        # Starts speech recognition, and returns after a single utterance is recognized. The end of a
-        # single utterance is determined by listening for silence at the end or until a maximum of 15
-        # seconds of audio is processed. It returns the recognition text as result.
-        # Note: Since recognize_once() returns only a single utterance, it is suitable only for single
-        # shot recognition like command or query.
-        # For long-running multi-utterance recognition, use start_continuous_recognition() instead.
-        result = speech_recognizer.recognize_once()
-        # Check the result
-        if result.reason == speechsdk.ResultReason.RecognizedSpeech:
-            print("Recognized: {}".format(result.text))
-            return result.text
-        elif result.reason == speechsdk.ResultReason.NoMatch:
-            raise Exception('No speech could be recognized: {}'.format(result.no_match_details))
-        elif result.reason == speechsdk.ResultReason.Canceled:
-            cancellation_details = result.cancellation_details
-            if cancellation_details.reason == speechsdk.CancellationReason.Error:
-                raise Exception('Error details: {}'.format(cancellation_details.error_details))
-            raise Exception('Speech Recognition canceled: {}'.format(cancellation_details.reason))
 
 
 class GoogleASR(ASR):

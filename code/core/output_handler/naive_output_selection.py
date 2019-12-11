@@ -1,3 +1,9 @@
+"""
+The naive output post processing unit.
+
+Authors: Hamed Zamani (hazamani@microsoft.com)
+"""
+
 from code import util
 from code.core.output_handler.output_selection import OutputProcessing
 from code.core.interaction_handler.msg import Message

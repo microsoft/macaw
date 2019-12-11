@@ -7,7 +7,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 from code.cis import CIS
 from code.core import mrc, retrieval
 from code.core.input_handler.action_detection import RequestDispatcher
-from code.core.output_handler import output_processing
+from code.core.output_handler import naive_output_selection
 
 
 class ConvSearch(CIS):
@@ -16,7 +16,7 @@ class ConvSearch(CIS):
         self.retrieval = retrieval.get_retrieval_model(params=self.params)
         self.qa = mrc.get_mrc_model(params=self.params)
         self.request_dispatcher = RequestDispatcher({'retrieval': self.retrieval, 'qa': self.qa})
-        self.output_selection = output_processing.NaiveOutputProcessing({})
+        self.output_selection = naive_output_selection.NaiveOutputProcessing({})
 
     def request_handler_func(self, conv_list):
         # identify action
@@ -27,7 +27,6 @@ class ConvSearch(CIS):
 
     def run(self):
         self.interface.run()
-
 
 
 if __name__ == '__main__':
