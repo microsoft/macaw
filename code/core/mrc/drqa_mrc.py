@@ -57,7 +57,7 @@ class DrQA(MRC):
         super().__init__(params)
         sys.path.insert(0, self.params['mrc_path'])
         drqa.tokenizers.set_default('corenlp_classpath', os.path.join(self.params['corenlp_path'], '*'))
-        self.predictor = Predictor(self.params['mrc_model_path'], None, num_workers=0, normalize=False)
+        self.predictor = Predictor(self.params['mrc_model_path'], tokenizer='simple', num_workers=0, normalize=False)
 
     def get_results(self, conv_list, doc):
         """

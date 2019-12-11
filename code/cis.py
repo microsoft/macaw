@@ -44,8 +44,8 @@ class CIS(ABC):
             conv = [msg] + self.msg_db.get_conv_history(user_id=msg.user_id, max_time=10 * 60 * 1000, max_count=10)
             self.msg_db.insert_one(msg)
 
-            output_msg = func_timeout(self.timeout, self.request_handler_func, args=[conv])
-
+            # output_msg = func_timeout(self.timeout, self.request_handler_func, args=[conv])
+            output_msg = self.request_handler_func(conv)
             self.msg_db.insert_one(output_msg)
             return output_msg
 
