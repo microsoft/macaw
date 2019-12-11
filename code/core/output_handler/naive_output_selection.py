@@ -1,6 +1,6 @@
 from code import util
 from code.core.output_handler.output_selection import OutputProcessing
-from code.util.msg import Message
+from code.core.interaction_handler.msg import Message
 
 
 class NaiveOutputProcessing(OutputProcessing):

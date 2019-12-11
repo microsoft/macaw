@@ -12,7 +12,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
 from code import util
-from code.util.msg import Message
+from code.core.interaction_handler.msg import Message
 from code.interface.interface import Interface
 
 

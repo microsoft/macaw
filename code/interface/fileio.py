@@ -7,7 +7,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 import time
 
 from code.interface.interface import Interface
-from code.util.msg import Message
+from code.core.interaction_handler.msg import Message
 
 
 class FileioInterface(Interface):

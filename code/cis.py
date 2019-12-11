@@ -9,7 +9,7 @@ from func_timeout import FunctionTimedOut
 
 from code import interface, util
 from code.core.interaction_handler.user_requests_db import InteractionDB
-from code.util.msg import Message
+from code.core.interaction_handler.msg import Message
 
 
 class CIS(ABC):

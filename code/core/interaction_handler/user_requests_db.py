@@ -7,7 +7,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 from pymongo import MongoClient
 
 from code import util
-from code.util.msg import Message
+from code.core.interaction_handler.msg import Message
 
 
 class InteractionDB:
