@@ -6,7 +6,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 
 import multiprocessing
 
-from code.core import actions
+from code.core.input_handler import actions
 
 
 class PreActionRequestDispatcher:
