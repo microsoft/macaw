@@ -5,7 +5,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
 from abc import ABC, abstractmethod
-from func_timeout import func_timeout, FunctionTimedOut
+from func_timeout import func_timeout
 import traceback
 
 
@@ -38,7 +38,6 @@ class RetrievalAction(Action):
         Returns:
             A list of Documents.
         """
-        print('&&&&&&&&&&&', params['actions']['retrieval'].get_results(conv_list))
         return params['actions']['retrieval'].get_results(conv_list)
 
 
@@ -83,6 +82,17 @@ class QAAction(Action):
 
 
 def run_action(action, conv_list, params, return_dict):
+    """
+    This method runs the specified action.
+
+    Args:
+        action(str): The action name, e.g., 'retrieval', 'qa', etc.
+        conv_list(list): List of util.msg.Message, each corresponding to a conversational message from / to the
+        user. This list is in reverse order, meaning that the first elements is the last interaction made by user.
+        params(dict): A dict containing some parameters.
+        return_dict(dict): A shared dict for all processes running this action. The actions' outputs should be added to
+        this dict.
+    """
     if action == 'retrieval':
         action_func = RetrievalAction.run
     elif action == 'qa':
@@ -92,8 +102,6 @@ def run_action(action, conv_list, params, return_dict):
 
     try:
         return_dict[action] = func_timeout(params['timeout'], action_func, args=[conv_list, params])
-    except FunctionTimedOut:
-        return_dict[action] = None
     except Exception:
         return_dict[action] = None
         traceback.print_exc()
