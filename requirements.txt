@@ -1,10 +1,8 @@
 func_timeout==4.3.5
 pymongo==3.9.0
 justext==2.2.0
-drqa
-pyndri
-speech_recognition==3.8.1
+SpeechRecognition
 pydub
-telegram==12.0.0
+python-telegram-bot==12.0.0
 stanfordcorenlp
 google-cloud-texttospeech
