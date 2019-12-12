@@ -95,9 +95,6 @@ class RequestDispatcher:
             command = conv_list[0].text.split(' ')[0]
             return self.execute_command(conv_list, command)
 
-        params = {'actions': self.params['actions'],
-                  'timeout': self.params['timeout'],
-                  'logger': self.params['logger']}
         action_processes = []
         manager = multiprocessing.Manager()
         action_results = manager.dict()
