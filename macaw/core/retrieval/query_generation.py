@@ -115,7 +115,7 @@ class SimpleQueryGeneration(QueryGeneration):
         """
         conv_history = []
         for msg in reversed(conv_list):
-            if msg.msg_info['msg_source'] == 'user' and msg.msg_info['msg_type'] == 'text':
+            if msg.msg_info['msg_source'] == 'user' and msg.msg_info['msg_type'] in ['text', 'voice']:
                 temp = msg.text if msg.text.endswith('?') else (msg.text + '?')
                 conv_history.append(temp)
             # elif msg.msg_info['msg_source'] == 'system' and msg.msg_info['msg_type'] == 'text' and len(msg.text.split()) < 30:
