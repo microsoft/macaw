@@ -1,5 +1,123 @@
+# Macaw: An extensible conversational information seeking system
+Conversational information seeking (CIS) has been recognized as a major emerging research area in information retrieval.
+Such research will require data and tools, to allow the implementation and study of conversational systems. Macaw is
+an open-source framework with a modular architecture for CIS research. Macaw supports *multi-turn*, *multi-modal*, and 
+*mixed-initiative* interactions, for tasks such as document retrieval, question answering, recommendation, and 
+structured data exploration. It has a modular design to encourage the study of new CIS algorithms, which can be 
+evaluated in batch mode. It can also integrate with a user interface, which allows user studies and data collection in 
+an interactive mode, where the back end can be *fully algorithmic* or a *wizard of oz* setup. 
 
-# Contributing
+
+## Features
+
+
+## Installation
+Macaw requires `Python >= 3.6` and `pip3`. If you don't have `setuptools`, run `sudo pip3 install setuptools`. 
+To install Macaw, first **clone macaw** from this repo and then follow the following installation steps. The
+mentioned installation commands can be executed on Ubuntu. You can use the same or similar commands on other Linux 
+distribution. If you are using Windows 10, we recommend installing Macaw and all the required packages on 
+[Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+
+#### Step 1: Installing MongoDB server
+Macaw uses MongoDB for storing and retrieving user interactions (conversations). To install MongoDB server, run the
+following command:
+```
+sudo apt-get install mongodb-server-core
+```
+
+#### Step 2: Installing Indri and Pyndri
+[Indri](http://lemurproject.org/indri.php) is an open-source search engine for information retrieval research, 
+implemented as part of the [Lemur Project](http://lemurproject.org/).
+[Pyndri](https://github.com/cvangysel/pyndri) is a python interface to Indri. Macaw uses Indri for retrieving documents 
+from an arbitrary text collection.
+To install Indri, first download Indri from https://sourceforge.net/projects/lemur/files/lemur/. As suggested by pyndri,
+we have used Indri-5.11. This Indri version can be installed as follows:
+```
+# download indri-5.11.tar.gz
+sudo apt install g++ zlib1g-dev
+tar xzvf indri-5.11.tar.gz
+cd indri-5.11
+./configure CXX="g++ -D_GLIBCXX_USE_CXX11_ABI=0"
+make
+sudo make install
+```
+
+Then, clone the pyndri repository from https://github.com/cvangysel/pyndri and run the following command:
+```
+python3 setup.py install
+```
+
+At this step, you can make sure your installation is complete by running the pyndri tests.
+
+#### Step 3: Installing DrQA
+Macaw also supports answer extraction / generation for user queries from retrieved documents. For this purpose, it 
+features [DrQA](https://github.com/facebookresearch/DrQA). 
+To install DrQA, run the following commands:
+```
+git clone https://github.com/facebookresearch/DrQA.git
+cd DrQA
+pip3 install -r requirements.txt
+python3 setup.py develop
+pip3 install torch
+```
+
+To use pre-trained DrQA model, use the following command. 
+```
+./download.sh
+```
+This downloads a 7.5GB (compressed) file and requires 25GB 
+(uncompressed) space. This may take a while!
+
+
+#### Step 4: Installing Macaw
+After cloning Macaw, use the following commands for installation:
+```
+cd macaw
+pip3 install -r requirements.txt
+python3 setup.py install
+```
+
+## Running Macaw
+If you run macaw with interactive (or live) mode, you should first run MongoDB server using the following command:
+```
+sudo mongod
+```
+Note that this command uses the default database directory (`/data/db`) for storing the data. You may need to create 
+this directory if you haven't. You can also use other locations using the `--dbpath` argument. 
+
+When the MongoDB server runs, open another terminal and run one of the macaw apps, for example run:
+```
+python3 live_main.py
+```
+
+## Development and Extension in Macaw
+
+
+## Bug Report and Feature Request
+For bug report and feature request, you can open an issue in github, or send an email to 
+[Hamed Zamani](http://hamedz.ir) at `hazamani@microsoft.com`.
+
+## Citation
+If you found Macaw useful, you can cite the following article:
+```
+Hamed Zamani and Nick Craswell, "Macaw: An Extensible Conversational Information Seeking System", arxiv pre-print.
+```
+
+bibtex:
+```
+@article{macaw,
+  title={Macaw: An Extensible Conversational Information Seeking System},
+  author={Zamani, Hamed and Craswell, Nick},
+  journal={arXiv preprint arXiv:toappear},
+  year={2019},
+}
+```
+
+## License
+Macaw is distributed under the **MIT License**. See the `LICENSE` file for more information.
+
+
+## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
