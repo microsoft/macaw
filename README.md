@@ -36,6 +36,7 @@ we have used Indri-5.11. This Indri version can be installed as follows:
 # download indri-5.11.tar.gz
 sudo apt install g++ zlib1g-dev
 tar xzvf indri-5.11.tar.gz
+rm indri-5.11.tar.gz
 cd indri-5.11
 ./configure CXX="g++ -D_GLIBCXX_USE_CXX11_ABI=0"
 make
@@ -48,6 +49,22 @@ python3 setup.py install
 ```
 
 At this step, you can make sure your installation is complete by running the pyndri tests.
+
+#### Step 3: Installing Stanford Core NLP
+Stanford Core NLP can be used for tokenization and most importantly for co-reference resolution. If you do not need 
+co-reference resolution, you can ignore this step. Stanford Core NLP requires `java`. Get it by following these 
+commands:
+```
+wget -O "stanford-corenlp-full-2017-06-09.zip" "http://nlp.stanford.edu/software/stanford-corenlp-full-2017-06-09.zip"
+sudo apt-get install unzip
+unzip "stanford-corenlp-full-2017-06-09.zip"
+rm "stanford-corenlp-full-2017-06-09.zip"
+``` 
+
+If you don't have `java`, install it using:
+```
+sudo apt-get install default-jre
+```
 
 #### Step 3: Installing DrQA
 Macaw also supports answer extraction / generation for user queries from retrieved documents. For this purpose, it 
