@@ -1,4 +1,4 @@
-# Macaw: An extensible conversational information seeking system
+# Macaw: An Extensible Conversational Information Seeking Platform
 Conversational information seeking (CIS) has been recognized as a major emerging research area in information retrieval.
 Such research will require data and tools, to allow the implementation and study of conversational systems. Macaw is
 an open-source framework with a modular architecture for CIS research. Macaw supports *multi-turn*, *multi-modal*, and 
@@ -7,6 +7,8 @@ structured data exploration. It has a modular design to encourage the study of n
 evaluated in batch mode. It can also integrate with a user interface, which allows user studies and data collection in 
 an interactive mode, where the back end can be *fully algorithmic* or a *wizard of oz* setup. 
 
+Macaw could be of interest to the researchers and practitioners working on information retrieval, natural language 
+processing, and dialogue systems.
 
 ## Features
 
@@ -68,30 +70,38 @@ sudo apt-get install default-jre
 
 #### Step 4: Installing DrQA
 Macaw also supports answer extraction / generation for user queries from retrieved documents. For this purpose, it 
-features [DrQA](https://github.com/facebookresearch/DrQA). 
+features [DrQA](https://github.com/facebookresearch/DrQA). If you do not need this functionality, ignore this step (you
+can also install this later). 
 To install DrQA, run the following commands:
 ```
 git clone https://github.com/facebookresearch/DrQA.git
 cd DrQA
 pip3 install -r requirements.txt
-python3 setup.py develop
 pip3 install torch
+sudo python3 setup.py develop
 ```
 
 To use pre-trained DrQA model, use the following command. 
 ```
 ./download.sh
 ```
-This downloads a 7.5GB (compressed) file and requires 25GB 
-(uncompressed) space. This may take a while!
+This downloads a 7.5GB (compressed) file and requires 25GB (uncompressed) space. This may take a while!
+ 
 
+
+#### Step 5: Installing FFmpeg
+To support speech interactions with users, Macaw requires FFmpeg for some multimedia processing steps. If you don't 
+need a speech support from Macaw, you can skip this step. To install FFmpeg, run the following command:
+```
+sudo apt-get install 
+```
 
 #### Step 5: Installing Macaw
 After cloning Macaw, use the following commands for installation:
 ```
 cd macaw
-pip3 install -r requirements.txt
-python3 setup.py install
+sudo pip3 install -r requirements.txt
+sudo python3 setup.py install
 ```
 
 ## Running Macaw
@@ -123,7 +133,7 @@ Hamed Zamani and Nick Craswell, "Macaw: An Extensible Conversational Information
 bibtex:
 ```
 @article{macaw,
-  title={Macaw: An Extensible Conversational Information Seeking System},
+  title={Macaw: An Extensible Conversational Information Seeking Platform},
   author={Zamani, Hamed and Craswell, Nick},
   journal={arXiv preprint arXiv:toappear},
   year={2019},
