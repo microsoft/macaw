@@ -66,7 +66,7 @@ If you don't have `java`, install it using:
 sudo apt-get install default-jre
 ```
 
-#### Step 3: Installing DrQA
+#### Step 4: Installing DrQA
 Macaw also supports answer extraction / generation for user queries from retrieved documents. For this purpose, it 
 features [DrQA](https://github.com/facebookresearch/DrQA). 
 To install DrQA, run the following commands:
@@ -86,7 +86,7 @@ This downloads a 7.5GB (compressed) file and requires 25GB
 (uncompressed) space. This may take a while!
 
 
-#### Step 4: Installing Macaw
+#### Step 5: Installing Macaw
 After cloning Macaw, use the following commands for installation:
 ```
 cd macaw
