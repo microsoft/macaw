@@ -10,6 +10,18 @@ an interactive mode, where the back end can be *fully algorithmic* or a *wizard 
 Macaw could be of interest to the researchers and practitioners working on information retrieval, natural language 
 processing, and dialogue systems.
 
+Table of content:
++ [Macaw Architecture](#macaw-architecture)
+    + [Interfaces](#interfaces)
+    + [Retrieval](#retrieval)
+    + [Answer Selection and Generation](#answer-selection-and-generation)
++ [Installation](#installation) 
++ [Running Macaw](#running-macaw)
++ [Bug Report and Feature Request](#bug-report-and-feature-request)
++ [Citation](#citation)
++ [License](#license)
++ [Contribution](#contribution)
+
 ## Macaw Architecture
 Macaw has a modular architecture, which allows further development and extension. The high-level architecture of Macaw
 is presented below:
@@ -34,7 +46,7 @@ Macaw features the following search engines:
 collection. 
 + Bing web search API: sending a request to the Bing API and getting the results.
 
-#### Answer Selection / Generation
+#### Answer Selection and Generation
 For question answering, Macaw only features [the DrQA model](https://github.com/facebookresearch/DrQA) in its current 
 version.
 
@@ -168,7 +180,7 @@ bibtex:
 Macaw is distributed under the **MIT License**. See the `LICENSE` file for more information.
 
 
-## Contributing
+## Contribution
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
