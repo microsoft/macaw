@@ -10,7 +10,33 @@ an interactive mode, where the back end can be *fully algorithmic* or a *wizard 
 Macaw could be of interest to the researchers and practitioners working on information retrieval, natural language 
 processing, and dialogue systems.
 
-## Features
+## Macaw Architecture
+Macaw has a modular architecture, which allows further development and extension. The high-level architecture of Macaw
+is presented below:
+
+![The high-level architecture of Macaw](macaw-arch.jpg)
+
+For more information on each module in Macaw, refer to this paper.
+
+#### Interfaces
+Macaw supports the following interfaces:
++ Standard IO: For *development* purposes
++ File IO: For *batch experiments*
++ Telegram bot: For interaction with real users
+
+Here is an example of the Telegram interface for Macaw. It supports multi-modal interactions (text, speech, click, etc).
+![Telegram interface for Macaw](macaw-example-tax.jpg)
+
+
+#### Retrieval
+Macaw features the following search engines:
++ [Indri](http://lemurproject.org/indri.php): an open-source search engine that can be used for any arbitrary text 
+collection. 
++ Bing web search API: sending a request to the Bing API and getting the results.
+
+#### Answer Selection / Generation
+For question answering, Macaw only features [the DrQA model](https://github.com/facebookresearch/DrQA) in its current 
+version.
 
 
 ## Installation
@@ -96,7 +122,7 @@ need a speech support from Macaw, you can skip this step. To install FFmpeg, run
 sudo apt-get install 
 ```
 
-#### Step 5: Installing Macaw
+#### Step 6: Installing Macaw
 After cloning Macaw, use the following commands for installation:
 ```
 cd macaw
@@ -116,8 +142,6 @@ When the MongoDB server runs, open another terminal and run one of the macaw app
 ```
 python3 live_main.py
 ```
-
-## Development and Extension in Macaw
 
 
 ## Bug Report and Feature Request

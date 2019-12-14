@@ -31,6 +31,10 @@ class NLPUtil:
         self.params = params
         self.corenlp = StanfordCoreNLP(self.params['corenlp_path'], quiet=False)
 
+        # Pre-fetching the required models.
+        props = {'annotators': 'coref', 'pipelineLanguage': 'en', 'ner.useSUTime': False}
+        self.corenlp.annotate('', properties=props)
+
     def get_coref(self, text):
         """
         Run co-reference resolution on the input text.
@@ -42,4 +46,5 @@ class NLPUtil:
         """
         props = {'annotators': 'coref', 'pipelineLanguage': 'en', 'ner.useSUTime': False}
         result = json.loads(self.corenlp.annotate(text, properties=props))
+
         return result

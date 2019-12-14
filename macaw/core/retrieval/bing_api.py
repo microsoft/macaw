@@ -49,10 +49,10 @@ class BingWebSearch(Retrieval):
 		for i in range(min(len(search_results['webPages']['value']), self.results_requested)):
 			id = search_results['webPages']['value'][i]['url']
 			title = search_results['webPages']['value'][i]['name']
-			text = search_results['webPages']['value'][i]['snippet']
+			snippet = search_results['webPages']['value'][i]['snippet']
 			headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0'}
 			text = html_to_clean_text(requests.get(id, headers=headers).content)
-			score = 10 - i # this is not a score returned by Bing
+			score = 10 - i  # this is not a score returned by Bing (just 10 - document rank)
 			results.append(Document(id, title, text, score))
 		return results
 
@@ -67,5 +67,7 @@ class BingWebSearch(Retrieval):
 			A Document from the collection whose ID is equal to the given doc_id. For some reasons, the method returns
 			a list of Documents with a length of 1.
 		"""
+		# Telegram has a nice interface for loading websites. Therefore, we decided to only pass the doc_id (URL). This
+		# can be simply enhanced by the title and the content of the document.
 		doc = Document(doc_id, doc_id, doc_id, -1)
 		return [doc]

@@ -78,8 +78,8 @@ if __name__ == '__main__':
     # These are parameters used by the retrieval model.
     retrieval_params = {'query_generation': 'simple',  # the model that generates a query from a conversation history.
                         'use_coref': True,  # True, if query generator can use coreference resolution, otherwise False.
-                        'search_engine': 'indri',  # the search engine. It can be either 'indri' or 'bing'.
-                        'bing_key': '7a9b8a186d414184abecb3ac6ef7d296',  # Bing API key
+                        'search_engine': 'bing',  # the search engine. It can be either 'indri' or 'bing'.
+                        'bing_key': '008c3b49dd9d401eb42fe3d6c5e3527a',  # Bing API key
                         'search_engine_path': '/mnt/e/indri-5.11/',  # The path to the indri toolkit.
                         'col_index': '/mnt/e/indri-index/robust_indri/indri_index',  # The path to the indri index.
                         'col_text_format': 'trectext',  # collection text format. Standard 'trectext' is only supported.
