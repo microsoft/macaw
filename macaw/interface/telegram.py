@@ -4,6 +4,7 @@ The Telegram bot (supports interactive multi-modal interactions with different d
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
+import urllib.parse
 import os
 import tempfile
 import traceback
@@ -61,7 +62,7 @@ class TelegramBot(Interface):
     def request_handler(self, update, context):
         """This method handles all text messages, and asks result_presentation to send the response to the user."""
         try:
-            print(update.message)
+            self.logger.info(update.message)
             user_info = {'first_name': update.message.chat.first_name,
                          'last_name': update.message.chat.last_name,
                          'is_bot': update._effective_user.is_bot
@@ -110,7 +111,7 @@ class TelegramBot(Interface):
     def button_click_handler(self, update, context):
         """This method handles clicks, and asks result_presentation to send the response to the user."""
         try:
-            print(update)
+            self.logger.info(update)
             user_info = {'first_name': update.callback_query.message.chat.first_name,
                          'last_name': update.callback_query.message.chat.last_name,
                          'is_bot': update._effective_user.is_bot
@@ -145,7 +146,8 @@ class TelegramBot(Interface):
                 self.updater.bot.send_voice(chat_id=update.message.chat.id, voice=open(ogg_file_name, 'rb'))
                 os.remove(ogg_file_name)  # removing audio files for privacy reasons.
             elif response_msg.msg_info['msg_type'] == 'options':
-                keyboard = [[InlineKeyboardButton(option_text[:self.MAX_OPTION_LEN], callback_data=option_data)]
+                keyboard = [[InlineKeyboardButton(option_text[:self.MAX_OPTION_LEN],
+                                                  callback_data=urllib.parse.unquote(option_data))]
                             for (option_text, option_data, output_score) in response_msg.msg_info['options']]
                 reply_markup = InlineKeyboardMarkup(keyboard)
                 update.message.reply_text(response_msg.text[:self.MAX_MSG_LEN], reply_markup=reply_markup)
