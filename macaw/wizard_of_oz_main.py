@@ -154,32 +154,32 @@ if __name__ == '__main__':
 
     # These are required database parameters if the mode is 'live'. The host and port of the machine hosting the
     # database, as well as the database name.
-    db_params = {'user_requests_db_host': 'localhost',
-                 'user_requests_db_port': 27017,
-                 'user_requests_db_name': 'macaw_test'}
+    db_params = {'interaction_db_host': 'localhost',
+                 'interaction_db_port': 27017,
+                 'interaction_db_name': 'macaw_test'}
 
     # These are interface parameters. They are interface specific.
     seeker_interface_params = {'interface': 'telegram',  # interface can be 'telegram' or 'stdio'.
-                               'bot_token': '920831379:AAFt_jr7bK4sFuv4FJ1hWIWqABoEa9w9708',  # Telegram bot token.
+                               'bot_token': 'YOUR_TELECGRAM_BOT_TOKEN_FOR_SEEKER',  # Telegram bot token.
                                'asr_model': 'google',  # The API used for speech recognition.
                                'asg_model': 'google',  # The API used for speech generation.
-                               'google-speech-to-text-credential-file': '/mnt/e/projects/macaw/data/macaw-a9446332dcc5.json',
-                               'user_id': '127075246'}
+                               'google-speech-to-text-credential-file': 'YOUR_GOOGLE_CREDENTIAL_FILE',
+                               'user_id': 'TELEGRAM_USER_ID_FOR_SEEKER'}
 
     wizard_interface_params = {'interface': 'telegram',  # interface can be 'telegram' or 'stdio'.
-                               'bot_token': '832589037:AAFxAEYTJwsQsMph6Ob6FF9VF71MP57mWK4',  # Telegram bot token.
+                               'bot_token': 'YOUR_TELECGRAM_BOT_TOKEN_FOR_WIZARD',  # Telegram bot token.
                                'asr_model': 'google',  # The API used for speech recognition.
                                'asg_model': 'google',  # The API used for speech generation.
-                               'google-speech-to-text-credential-file': '/mnt/e/projects/macaw/data/macaw-a9446332dcc5.json',
-                               'user_id': '127075246'}
+                               'google-speech-to-text-credential-file': 'YOUR_GOOGLE_CREDENTIAL_FILE',
+                               'user_id': 'TELEGRAM_USER_ID_FOR_WIZARD'}
 
     # These are parameters used by the retrieval model.
     retrieval_params = {'query_generation': 'simple',  # the model that generates a query from a conversation history.
                         'use_coref': False,  # True, if query generator can use coreference resolution, otherwise False.
                         'search_engine': 'indri',  # the search engine. It can be either 'indri' or 'bing'.
-                        'bing_key': '7a9b8a186d414184abecb3ac6ef7d296',  # Bing API key
-                        'search_engine_path': '/mnt/e/indri-5.11/',  # The path to the indri toolkit.
-                        'col_index': '/mnt/e/indri-index/robust_indri/indri_index',  # The path to the indri index.
+                        'bing_key': 'YOUR_BING_SUBSCRIPTION_KEY',  # Bing API key
+                        'search_engine_path': 'PATH_TO_INDRI',  # The path to the indri toolkit.
+                        'col_index': 'PATH_TO_INDRI_INDEX',  # The path to the indri index.
                         'col_text_format': 'trectext',  # collection text format. Standard 'trectext' is only supported.
                         'results_requested': 3}  # Maximum number of docs that should be retrieved by search engine.
     # Note: If you want to have a re-ranking model (e.g., learning to rank), you just need to simply extend the class

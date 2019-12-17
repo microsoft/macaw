@@ -70,18 +70,18 @@ if __name__ == '__main__':
     # These are interface parameters. They are interface specific.
     interface_params = {'interface': 'telegram',  # interface can be 'telegram' or 'stdio' for live mode, and 'fileio'
                                                   # for exp mode.
-                        'bot_token': '920831379:AAFt_jr7bK4sFuv4FJ1hWIWqABoEa9w9708',  # Telegram bot token.
+                        'bot_token': 'YOUR_TELECGRAM_BOT_TOKEN',  # Telegram bot token.
                         'asr_model': 'google',  # The API used for speech recognition.
                         'asg_model': 'google',  # The API used for speech generation.
-                        'google-speech-to-text-credential-file': '/mnt/e/projects/macaw/data/macaw-a9446332dcc5.json'}
+                        'google-speech-to-text-credential-file': 'YOUR_GOOGLE_CREDENTIAL_FILE'}
 
     # These are parameters used by the retrieval model.
     retrieval_params = {'query_generation': 'simple',  # the model that generates a query from a conversation history.
                         'use_coref': True,  # True, if query generator can use coreference resolution, otherwise False.
                         'search_engine': 'bing',  # the search engine. It can be either 'indri' or 'bing'.
-                        'bing_key': '008c3b49dd9d401eb42fe3d6c5e3527a',  # Bing API key
-                        'search_engine_path': '/mnt/e/indri-5.11/',  # The path to the indri toolkit.
-                        'col_index': '/mnt/e/indri-index/robust_indri/indri_index',  # The path to the indri index.
+                        'bing_key': 'YOUR_BING_SUBSCRIPTION_KEY',  # Bing API key
+                        'search_engine_path': 'PATH_TO_INDRI',  # The path to the indri toolkit.
+                        'col_index': 'PATH_TO_INDRI_INDEX',  # The path to the indri index.
                         'col_text_format': 'trectext',  # collection text format. Standard 'trectext' is only supported.
                         'results_requested': 3}  # Maximum number of docs that should be retrieved by search engine.
     # Note: If you want to have a re-ranking model (e.g., learning to rank), you just need to simply extend the class
@@ -92,9 +92,9 @@ if __name__ == '__main__':
 
     # These are parameters used by the machine reading comprehension model.
     mrc_params = {'mrc': 'drqa',  # MRC model.
-                  'mrc_model_path': '/mnt/e/test/DrQA/data/reader/multitask.mdl',  # The path to the model parameters.
-                  'mrc_path': '/mnt/e/test/DrQA/',  # The path to the model toolkit.
-                  'corenlp_path': '/mnt/e/test/DrQA/data/corenlp/',  # The path to the corenlp toolkit.
+                  'mrc_model_path': 'PATH_TO_PRETRAINED_MRC_MODEL',  # The path to the model parameters.
+                  'mrc_path': 'PATH_TO_MRC_DIRECTORY',  # The path to the model toolkit.
+                  'corenlp_path': 'PATH_TO_STANFORD_CORE_NLP_DIRECTORY',  # The path to the corenlp toolkit.
                   'qa_results_requested': 3}  # The number of candidate answers returned by the MRC model.
 
     params = {**basic_params, **db_params, **interface_params, **retrieval_params, **mrc_params}

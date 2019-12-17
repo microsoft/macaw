@@ -33,20 +33,21 @@ if __name__ == '__main__':
     basic_params = {'timeout': -1,  # timeout is in terms of second.
                     'mode': 'exp'}  # mode can be either live or exp.
     interface_params = {'interface': 'fileio',
-                        'input_file_path': '/mnt/e/projects/macaw/data/example_qa_input.txt',
-                        'output_file_path': '/mnt/e/projects/macaw/data/example_qa_output.txt',
+                        'input_file_path': 'INPUT_FILE',
+                        'output_file_path': 'OUTPUT_FILE',
                         'output_format': 'text'}
     retrieval_params = {'query_generation': 'simple',
-                        'search_engine': 'bing',
-                        'bing_key': '7a9b8a186d414184abecb3ac6ef7d296',  # only for Bing Web Search
-                        'search_engine_path': '/mnt/e/indri-5.11/',
-                        'col_index': '/mnt/e/indri-index/robust_indri/indri_index',
-                        'col_text_format': 'trectext',
+                        'search_engine': 'bing',  # 'bing' or 'indri'
+                        'use_coref': True,  # True, if query generator can use coreference resolution, otherwise False.
+                        'bing_key': 'YOUR_BING_SUBSCRIPTION_TOKEN',  # only for Bing Web Search
+                        'search_engine_path': 'PATH_TO_INDRI',  # only for Indri
+                        'col_index': 'PATH_TO_INDRI_INDEX',  # only for Indri
+                        'col_text_format': 'trectext',  # trectext or trecweb. Only for Indri.
                         'results_requested': 3}
     mrc_params = {'mrc': 'drqa',
-                  'mrc_model_path': '/mnt/e/test/DrQA/data/reader/multitask.mdl',
-                  'mrc_path': '/mnt/e/test/DrQA/',
-                  'corenlp_path': '/mnt/e/test/DrQA/data/corenlp/',
+                  'mrc_model_path': 'PATH_TO_PRETRAINED_MRC_MODEL',
+                  'mrc_path': 'PATH_TO_MRC_DIRECTORY',
+                  'corenlp_path': 'PATH_TO_STANFORD_CORE_NLP_DIRECTORY',
                   'qa_results_requested': 3}
 
     params = {**basic_params, **interface_params, **retrieval_params, **mrc_params}
