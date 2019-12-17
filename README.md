@@ -150,7 +150,19 @@ sudo mongod
 Note that this command uses the default database directory (`/data/db`) for storing the data. You may need to create 
 this directory if you haven't. You can also use other locations using the `--dbpath` argument. 
 
-When the MongoDB server runs, open another terminal and run one of the macaw apps, for example run:
+
+We provide three different main scripts (i.e., app):
++ `live_main.py`: An interactive conversational search and question answering system. It can use both STDIO and Telegram
+interfaces.
++ `batch_ext_main.py`: A model for running experiments on a reusable dataset. This main script uses FILEIO as the 
+interface.
++ `wizard_of_oz_main.py`: A main script for Wizard of Oz experiments.
+ 
+After selecting the desired main script, open the python file and provide the required parameters. For example, you need
+to use your Bing subscription key (if using Bing), the path to Indri index (if using Indri), Telegram bot token (if 
+using Telegram interface), etc. in order to run the `live_main.py` script. You can further run the favorite main script
+as below:
+
 ```
 python3 live_main.py
 ```
