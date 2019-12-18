@@ -50,9 +50,9 @@ class Seeker:
         Returns:
             output_msg(Message): Returns an output message that should be sent to the UI to be presented to the user.
         """
-        msg_db = InteractionDB(host=self.params['user_requests_db_host'],
-                               port=self.params['user_requests_db_port'],
-                               dbname=self.params['user_requests_db_name'])
+        msg_db = InteractionDB(host=self.params['interaction_db_host'],
+                               port=self.params['interaction_db_port'],
+                               dbname=self.params['interaction_db_name'])
         msg_db.insert_one(msg)
         msg_db.close()
         self.logger.info(msg)
