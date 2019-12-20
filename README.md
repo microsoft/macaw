@@ -33,11 +33,13 @@ For more information on each module in Macaw, refer to this paper.
 #### Interfaces
 Macaw supports the following interfaces:
 + Standard IO: For *development* purposes
-+ File IO: For *batch experiments*
++ File IO: For *batch experiments* (see the examples in the `data` folder for input and output file formats)
 + Telegram bot: For interaction with real users
 
 Here is an example of the Telegram interface for Macaw. It supports multi-modal interactions (text, speech, click, etc).
-![Telegram interface for Macaw](macaw-example-tax.jpg)
+
+![Telegram interface for Macaw](macaw-example-tax.jpg) 
+![Telegram interface for Macaw](macaw-example-shakespeare.jpg)
 
 
 #### Retrieval
