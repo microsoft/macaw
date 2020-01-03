@@ -10,6 +10,8 @@ an interactive mode, where the back end can be *fully algorithmic* or a *wizard 
 Macaw could be of interest to the researchers and practitioners working on information retrieval, natural language 
 processing, and dialogue systems.
 
+For more information on Macaw, please refer to [this paper](https://arxiv.org/pdf/1912.08904.pdf).
+
 Table of content:
 + [Macaw Architecture](#macaw-architecture)
     + [Interfaces](#interfaces)
@@ -185,7 +187,7 @@ bibtex:
 @article{macaw,
   title={Macaw: An Extensible Conversational Information Seeking Platform},
   author={Zamani, Hamed and Craswell, Nick},
-  journal={arXiv preprint arXiv:toappear},
+  journal={arXiv preprint arXiv:1912.08904},
   year={2019},
 }
 ```
