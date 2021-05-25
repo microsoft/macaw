@@ -78,7 +78,3 @@ class DrQA(MRC):
         for i, p in enumerate(predictions, 1):
             results.append(Document(None, None, p[0], p[1]))
         return results
-
-
-
-

@@ -55,8 +55,79 @@ For question answering, Macaw only features [the DrQA model](https://github.com/
 version.
 
 
-## Installation
-Macaw requires `Python >= 3.6` and `pip3`. If you don't have `setuptools`, run `sudo pip3 install setuptools`. 
+## Installation and running with Docker
+The package has been tested with certain dependencies and it is much easier to reproduce it in a similar environment. It has
+been integrated with Docker to make it compatible with all operating systems. The default Docker setup runs the application
+using the Standard IO interface, uses Indri for document retrieval, and DrQA for MRC (answer selection). To run using other
+settings, appropriate changes should be done.
+
+The first step is to install [Docker](https://docs.docker.com/engine/install/) in your system. Then continue with the below
+steps.
+
+#### Create the build
+To reduce the size of the build, we can keep certain data outside the Docker container and mount it using [volumes](https://docs.docker.com/storage/volumes/).
+1. Download the Stanford Core NLP data from [here](http://nlp.stanford.edu/software/stanford-corenlp-full-2017-06-09.zip) and
+put the directory `stanford-corenlp-full-2017-06-09` in your project root directory.
+1. Install [DrQA](https://github.com/facebookresearch/DrQA) in a separate workspace and download the pre-trained model. It
+stores the models in `data/reader/` directory. We will use the downloaded *multitask.mdl* model.
+
+Once you have the two downloads done, run the below command from project root to create a docker build with name *macaw*:
+```commandline
+docker build -t macaw .
+```
+
+If you don't want to pre-install DrQA model and Stanford Core NLP data, create the build using the below command. It will
+install both dependencies for you and keep them as part of the build. Note that this will significantly increase the build
+size (by ~400MB for Stanford CoreNLP and by ~7.5GB for DrQA).
+```commandline
+docker build --build-arg download_stanford_corenlp=true --build-arg download_drqa_model=true -t macaw .
+```
+
+#### Run the application
+If you downloaded certain data locally, then use Docker volumes to mount local directory to Docker container. You need to
+provide the local directory path during runtime. Run the command from project root.
+```commandline
+docker run --rm -i --name=macaw_test_container \
+-v <path/to/DrQA/data>:/usr/src/app/DrQA/data \
+-v $("pwd")/stanford-corenlp-full-2017-06-09:/usr/src/app/stanford-corenlp-full-2017-06-09 \
+macaw
+```
+`</path/to/DrQA/data>` could be `/Users/amitgh/PycharmProjects/DrQA/data` if you downloaded the pre-trained model
+in a separate workspace named DrQA.
+
+If you did not separately download data at build time, simply run:
+```commandline
+docker run --rm -i --name=macaw_test_container macaw
+```
+
+In above command we start a container with name *macaw_test_container* from build image *macaw* in interactive mode (`-i`)
+and remove the container when the application exits (`--rm`). After installing all dependencies, it runs `scripts/start.sh`
+which first starts MongoDB server in a separate thread and then runs `live_main.py`.
+
+#### ssh into the container
+While the application is running, we can go inside the container to see the contents (directory structure, indri index, etc.).
+```commandline
+docker exec -it macaw_test_container /bin/bash
+```
+
+#### Updating TREC data for Indri
+Indri index is created using the document stored in `trec_documents/` directory. It has some default data. To create a bigger
+index, download the entire data from [archive](https://archive.org/details/trec-ir) and put it in trec_documents. Docker will 
+copy it during build time and create a new index. Index creation parameters like *-memory*, *-stemmer.name* can be changed
+inside the Dockerfile.
+
+### A note on dependencies
+Pyndri is tested only with [Indri-5.11](https://sourceforge.net/projects/lemur/files/lemur/indri-5.11/) which in turn only
+supports certain OS. We use Ubuntu-16.04 in our Docker container. Ubuntu 18.04 creates issues during indri index creation
+because of some unsupported C++11 functions. *pip* version <21.0 is needed to properly install pyndri.
+
+
+## Local Setup
+
+To setup the package locally without using Docker, follow the below instructions.
+
+### Installation
+Macaw requires `Python >= 3.5` and `pip3`. If you don't have `setuptools`, run `sudo pip3 install setuptools`. 
 To install Macaw, first **clone macaw** from this repo and then follow the following installation steps. The
 mentioned installation commands can be executed on Ubuntu. You can use the same or similar commands on other Linux 
 distribution. If you are using Windows 10, we recommend installing Macaw and all the required packages on 
@@ -128,8 +199,6 @@ To use pre-trained DrQA model, use the following command.
 ./download.sh
 ```
 This downloads a 7.5GB (compressed) file and requires 25GB (uncompressed) space. This may take a while!
- 
-
 
 #### Step 5: Installing FFmpeg
 To support speech interactions with users, Macaw requires FFmpeg for some multimedia processing steps. If you don't 
@@ -146,7 +215,7 @@ sudo pip3 install -r requirements.txt
 sudo python3 setup.py install
 ```
 
-## Running Macaw
+### Running Macaw
 If you run macaw with interactive (or live) mode, you should first run MongoDB server using the following command:
 ```
 sudo mongod
@@ -176,6 +245,7 @@ python3 live_main.py
 For bug report and feature request, you can open an issue in github, or send an email to 
 [Hamed Zamani](http://hamedz.ir) at `hazamani@microsoft.com`.
 
+
 ## Citation
 If you found Macaw useful, you can cite the following article:
 ```
@@ -191,6 +261,7 @@ bibtex:
   year={2019},
 }
 ```
+
 
 ## License
 Macaw is distributed under the **MIT License**. See the `LICENSE` file for more information.

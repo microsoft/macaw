@@ -20,7 +20,9 @@ class StdioInterface(Interface):
     def run(self):
         while True:
             try:
-                request = input('ENTER YOUR COMMAND: ').strip()
+                request = input('ENTER YOUR COMMAND (type \'exit\' to leave): ').strip()
+                if request == 'exit':
+                    break
                 if len(request) == 0:
                     continue
                 user_info = {'first_name': 'STDIO',
@@ -55,7 +57,6 @@ class StdioInterface(Interface):
             else:
                 raise Exception('The msg_type is not recognized:', response_msg.msg_info['msg_type'])
             print('----------------------------------------------------------------------')
-            print('THE RESPONSE STARTS')
+            print('THE RESPONSE ENDS')
         except Exception as ex:
             traceback.print_exc()
-

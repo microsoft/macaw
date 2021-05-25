@@ -107,7 +107,7 @@ class RequestDispatcher:
             p.join()
 
         candidate_outputs = dict()
-        for key in action_results:
+        for key in action_results.keys():
             if action_results[key]:
                 candidate_outputs[key] = action_results[key]
         return candidate_outputs

@@ -35,7 +35,7 @@ class CIS(ABC):
             self.nlp_util = util.NLPUtil(self.params)
             self.params['nlp_util'] = self.nlp_util
         except Exception as ex:
-            self.params['logger'].warning('WARNING: There is a problem with setting up the NLP utility module.')
+            self.params['logger'].warning('WARNING: There is a problem with setting up the NLP utility module. ' + str(ex))
         self.timeout = self.params['timeout'] if 'timeout' in self.params else -1
 
     def live_request_handler(self, msg):
