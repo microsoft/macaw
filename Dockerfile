@@ -30,6 +30,19 @@ RUN cd indri-5.11 \
     && make \
     && make install
 
+# Install python 3.6 because 3.5 version is not compatible with new certifi changes. Gives error at runtime.
+# https://github.com/certifi/python-certifi/issues/195
+# Before installing Python 3.6, install the below so that packages of requirements.txt are installed correctly later.
+RUN apt-get update && apt-get install -y \
+    build-essential checkinstall \
+    libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev
+RUN wget "https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tgz" \
+    && tar -xvf Python-3.6.3.tgz \
+    && cd Python-3.6.3 \
+    && ./configure \
+    && make \
+    && make install
+
 # Install pip but not to the latest version as it does not support pyndri installation due to Python 2.7 incompatibility.
 # https://stackoverflow.com/questions/65896334
 RUN apt-get update && apt-get install -y python3-pip \
@@ -39,11 +52,11 @@ RUN pip3 install pyndri
 
 RUN apt update && apt install -y ffmpeg
 
+RUN pip3 install torch
+
 # Install all dependencies mentioned in the macaw requirements document.
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
-
-RUN pip3 install torch
 
 # Download Stanford core NLP data if user has not specified a local volume. This is a 400MB compressed file.
 ARG download_stanford_corenlp=false

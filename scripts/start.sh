@@ -6,5 +6,7 @@ echo "Inside the execution script."
 mongod --fork --logpath /var/log/mongodb/mongod.log
 echo "MongoDB started successfully."
 
+echo "This is the python version: $(python3 --version)"
+
 # Start the main application.
 python3 macaw/live_main.py
