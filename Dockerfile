@@ -52,11 +52,11 @@ RUN pip3 install pyndri
 
 RUN apt update && apt install -y ffmpeg
 
+RUN pip3 install torch
+
 # Install all dependencies mentioned in the macaw requirements document.
 COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt --trusted-host pypi.python.org
-
-RUN pip3 install torch
+RUN pip3 install -r requirements.txt
 
 # Download Stanford core NLP data if user has not specified a local volume. This is a 400MB compressed file.
 ARG download_stanford_corenlp=false
