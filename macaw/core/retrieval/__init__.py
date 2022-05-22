@@ -4,7 +4,8 @@ The retrieval module init.
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 import macaw.core.retrieval.bing_api
-import macaw.core.retrieval.indri
+# import macaw.core.retrieval.indri
+import macaw.core.retrieval.tantivy
 from macaw.core.retrieval import search_engine, query_generation
 
 
@@ -29,12 +30,14 @@ def get_retrieval_model(params):
 
     params['logger'].info('The search engine for retrieval: ' + params['search_engine'])
     if params['search_engine'] == 'indri':
-        return macaw.core.retrieval.indri.Indri({'query_generation': q_generation,
-                                    'indri_path': params['search_engine_path'],
-                                    'index': params['col_index'],
-                                    'text_format': params['col_text_format'],
-                                    'results_requested': params['results_requested'],
-                                    'logger': params['logger']})
+        # TODO: add tanvity here
+        pass
+        # return macaw.core.retrieval.indri.Indri({'query_generation': q_generation,
+        #                             'indri_path': params['search_engine_path'],
+        #                             'index': params['col_index'],
+        #                             'text_format': params['col_text_format'],
+        #                             'results_requested': params['results_requested'],
+        #                             'logger': params['logger']})
     elif params['search_engine'] == 'bing':
         return macaw.core.retrieval.bing_api.BingWebSearch({'query_generation': q_generation,
                                             'bing_key': params['bing_key'],
