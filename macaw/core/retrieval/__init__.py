@@ -30,7 +30,8 @@ def get_retrieval_model(params):
 
     params['logger'].info('The search engine for retrieval: ' + params['search_engine'])
     if params['search_engine'] == 'indri' or params['search_engine'] == 'tantivy':
-        return macaw.core.retrieval.tantivy.Tantivy({'path': params['search_engine_path'],
+        return macaw.core.retrieval.tantivy.Tantivy({'query_generation': q_generation,
+                                                     'path': params['search_engine_path'],
                                                      'load': True,
                                                      'results_requested': params['results_requested'],
                                                      'logger': params['logger']})
