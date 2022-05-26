@@ -36,15 +36,15 @@ class Tantivy(Retrieval):
             query = self.index.parse_query(query, ["body"])
             scores = self.searcher.search(query, self.results_requested).hits
             # docs = [(self.searcher.doc(doc_id)['doc_id'], score) for score, doc_id in scores]
-            docs = [self.searcher.doc(doc_id)['doc_id'] for _, doc_id in scores]
+            docs = [get_trec_doc(self.searcher.doc(doc_id)['body'])
+                    for _, doc_id in scores]  # convert the raw text into trec-doc
         except Exception as e:
             self.logger.error(f'Error on Query {e}')
             return None
-        # TODO: document should be TREC doc here
         results.append(docs)
 
         return results
 
     def get_doc_from_index(self, doc_id):
         # TODO: document should be TREC doc here
-        return [self.searcher.doc(doc_id)['body']]
+        return [get_trec_doc(self.searcher.doc(doc_id)['body'])]
