@@ -30,7 +30,6 @@ class Tantivy(Retrieval):
         self.logger.info('Loaded index and searcher')
 
     def retrieve(self, query):
-        results = []
         docs = []
         try:
             query = self.index.parse_query(query, ["body"])
@@ -41,9 +40,8 @@ class Tantivy(Retrieval):
         except Exception as e:
             self.logger.error(f'Error on Query {e}')
             return None
-        results.append(docs)
 
-        return results
+        return docs
 
     def get_doc_from_index(self, doc_id):
         # TODO: document should be TREC doc here
