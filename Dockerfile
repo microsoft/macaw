@@ -19,17 +19,6 @@ RUN apt-get update && apt-get install -y \
     apt-transport-https ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Download Indri search engine for document retrieval.
-#RUN wget --no-check-certificate https://sourceforge.net/projects/lemur/files/lemur/indri-5.11/indri-5.11.tar.gz \
-#    && tar -xvzf indri-5.11.tar.gz \
-#    && rm indri-5.11.tar.gz
-
-# Install Indri.
-#RUN cd indri-5.11 \
-#    && ./configure CXX="g++ -D_GLIBCXX_USE_CXX11_ABI=0" \
-#    && make \
-#    && make install
-
 # Install python 3.6 because 3.5 version is not compatible with new certifi changes. Gives error at runtime.
 # https://github.com/certifi/python-certifi/issues/195
 # Before installing Python 3.6, install the below so that packages of requirements.txt are installed correctly later.
@@ -48,8 +37,6 @@ RUN wget "https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz" \
 #RUN apt-get update && apt-get install -y python3-pip \
 #    && pip3 install --upgrade "pip < 21.0"
 RUN apt-get update && apt-get install -y python3-pip
-
-# RUN pip3 install pyndri
 
 RUN apt update && apt install -y ffmpeg
 
@@ -87,13 +74,6 @@ RUN mkdir -p /data/db
 
 # Copy directory that contains trectext documents needed for Indri retriever.
 COPY trec_documents trec_documents
-
-# Build indri index in directory /usr/src/app/indri-5.11/buildindex/my_index. Not needed if running with Bing.
-# ARG use_indri_retriever=true
-#RUN if $use_indri_retriever ; then cd indri-5.11/buildindex \
-#    && ./IndriBuildIndex -memory=100M -corpus.class=trectext -index=my_index \
-#    -stemmer.name=Krovetz -corpus.path=/usr/src/app/trec_documents \
-#    ; fi
 
 # Copy files and directories from workspace to Docker container.
 COPY macaw macaw
