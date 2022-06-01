@@ -2,11 +2,11 @@
 
 Conversational information seeking (CIS) has been recognized as a major emerging research area in information retrieval.
 Such research will require data and tools, to allow the implementation and study of conversational systems. Macaw is an
-open-source framework with a modular architecture for CIS research. Macaw supports *multi-turn*, *multi-modal*, and
-*mixed-initiative* interactions, for tasks such as document retrieval, question answering, recommendation, and
+open-source framework with a modular architecture for CIS research. Macaw supports _multi-turn_, _multi-modal_, and
+_mixed-initiative_ interactions, for tasks such as document retrieval, question answering, recommendation, and
 structured data exploration. It has a modular design to encourage the study of new CIS algorithms, which can be
 evaluated in batch mode. It can also integrate with a user interface, which allows user studies and data collection in
-an interactive mode, where the back end can be *fully algorithmic* or a *wizard of oz* setup.
+an interactive mode, where the back end can be _fully algorithmic_ or a _wizard of oz_ setup.
 
 Macaw could be of interest to the researchers and practitioners working on information retrieval, natural language
 processing, and dialogue systems.
@@ -15,16 +15,16 @@ For more information on Macaw, please refer to [this paper](https://arxiv.org/pd
 
 Table of content:
 
-+ [Macaw Architecture](#macaw-architecture)
-    + [Interfaces](#interfaces)
-    + [Retrieval](#retrieval)
-    + [Answer Selection and Generation](#answer-selection-and-generation)
-+ [Installation](#installation)
-+ [Running Macaw](#running-macaw)
-+ [Bug Report and Feature Request](#bug-report-and-feature-request)
-+ [Citation](#citation)
-+ [License](#license)
-+ [Contribution](#contribution)
+- [Macaw Architecture](#macaw-architecture)
+  - [Interfaces](#interfaces)
+  - [Retrieval](#retrieval)
+  - [Answer Selection and Generation](#answer-selection-and-generation)
+- [Installation](#installation)
+- [Running Macaw](#running-macaw)
+- [Bug Report and Feature Request](#bug-report-and-feature-request)
+- [Citation](#citation)
+- [License](#license)
+- [Contribution](#contribution)
 
 ## Macaw Architecture
 
@@ -39,9 +39,9 @@ For more information on each module in Macaw, refer to this paper.
 
 Macaw supports the following interfaces:
 
-+ Standard IO: For *development* purposes
-+ File IO: For *batch experiments* (see the examples in the `data` folder for input and output file formats)
-+ Telegram bot: For interaction with real users
+- Standard IO: For _development_ purposes
+- File IO: For _batch experiments_ (see the examples in the `data` folder for input and output file formats)
+- Telegram bot: For interaction with real users
 
 Here is an example of the Telegram interface for Macaw. It supports multi-modal interactions (text, speech, click, etc).
 
@@ -52,8 +52,8 @@ Here is an example of the Telegram interface for Macaw. It supports multi-modal 
 
 Macaw features the following search engines:
 
-+ [Tantivy](https://github.com/quickwit-oss/tantivy): Tantivy is a full-text search engine library written in Rust.
-+ Bing web search API: sending a request to the Bing API and getting the results.
+- [Tantivy](https://github.com/quickwit-oss/tantivy): Tantivy is a full-text search engine library written in Rust.
+- Bing web search API: sending a request to the Bing API and getting the results.
 
 #### Answer Selection and Generation
 
@@ -79,10 +79,9 @@ using [volumes](https://docs.docker.com/storage/volumes/).
    from [here](http://nlp.stanford.edu/software/stanford-corenlp-full-2017-06-09.zip) and put the
    directory `stanford-corenlp-full-2017-06-09` in your project root directory.
 1. Install [DrQA](https://github.com/facebookresearch/DrQA) in a separate workspace and download the pre-trained model.
-   It stores the models in `data/reader/` directory. We will use the downloaded *multitask.mdl* model.
+   It stores the models in `data/reader/` directory. We will use the downloaded _multitask.mdl_ model.
 
-Once you have the two downloads done, run the below command from project root to create a docker build with name *
-macaw*:
+Once you have the two downloads done, run the below command from project root to create a docker build with name _macaw_:
 
 ```commandline
 docker build -t macaw .
@@ -95,6 +94,8 @@ the build size (by ~400MB for Stanford CoreNLP and by ~7.5GB for DrQA).
 ```commandline
 docker build --build-arg download_stanford_corenlp=true --build-arg download_drqa_model=true -t macaw .
 ```
+
+_Note: To make sure that the Docker container builds without modification, an x86_64/amd64 system is required. If you have an arm64 device, then add the flag `--platform linux/amd64` to the build command._
 
 #### Run the application
 
@@ -117,11 +118,14 @@ If you did not separately download data at build time, simply run:
 docker run --rm -i --name=macaw_test_container macaw
 ```
 
-In above command we start a container with name *macaw_test_container* from build image *macaw* in interactive
+In above command we start a container with name _macaw_test_container_ from build image _macaw_ in interactive
 mode (`-i`)
 and remove the container when the application exits (`--rm`). After installing all dependencies, it
 runs `scripts/start.sh`
 which first starts MongoDB server in a separate thread and then runs `live_main.py`.
+
+_Note: Similarly to requiring to requiring the additional flag of `--platform linux/amd64` to build the Docker container with an arm64 machine, running said container also requires the same flag.
+:warning: **The performance of the container under this emulation will be incredibly poor. If possible, use a x86_64/amd64 system**._
 
 #### ssh into the container
 
@@ -172,7 +176,7 @@ wget -O "stanford-corenlp-full-2017-06-09.zip" "http://nlp.stanford.edu/software
 sudo apt-get install unzip
 unzip "stanford-corenlp-full-2017-06-09.zip"
 rm "stanford-corenlp-full-2017-06-09.zip"
-``` 
+```
 
 If you don't have `java`, install it using:
 
@@ -208,7 +212,7 @@ To support speech interactions with users, Macaw requires FFmpeg for some multim
 a speech support from Macaw, you can skip this step. To install FFmpeg, run the following command:
 
 ```
-sudo apt-get install 
+sudo apt-get install
 ```
 
 #### Step 5: Installing Macaw
@@ -234,11 +238,11 @@ this directory if you haven't. You can also use other locations using the `--dbp
 
 We provide three different main scripts (i.e., app):
 
-+ `live_main.py`: An interactive conversational search and question answering system. It can use both STDIO and Telegram
+- `live_main.py`: An interactive conversational search and question answering system. It can use both STDIO and Telegram
   interfaces.
-+ `batch_ext_main.py`: A model for running experiments on a reusable dataset. This main script uses FILEIO as the
+- `batch_ext_main.py`: A model for running experiments on a reusable dataset. This main script uses FILEIO as the
   interface.
-+ `wizard_of_oz_main.py`: A main script for Wizard of Oz experiments.
+- `wizard_of_oz_main.py`: A main script for Wizard of Oz experiments.
 
 After selecting the desired main script, open the python file and provide the required parameters. For example, you need
 to use your Bing subscription key (if using Bing), the path to Tantivy index, Telegram bot token (if

@@ -1,5 +1,4 @@
-FROM ubuntu:16.04
-MAINTAINER ahattimare@umass.edu
+FROM ubuntu:20.04
 
 WORKDIR /usr/src/app
 
@@ -19,22 +18,11 @@ RUN apt-get update && apt-get install -y \
     apt-transport-https ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Before installing Python 3.7, install the below so that packages of requirements.txt are installed correctly later.
-RUN apt-get update && apt-get install -y \
-    build-essential checkinstall \
-    libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev
-RUN wget "https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz" \
-    && tar -xvf Python-3.7.9.tgz \
-    && cd Python-3.7.9 \
-    && ./configure \
-    && make \
-    && make install
-
 RUN apt-get update && apt-get install -y python3-pip
 
 RUN apt update && apt install -y ffmpeg
 
-RUN pip3 install torch
+RUN pip3 install --upgrade pip && pip3 install torch
 
 # Install all dependencies mentioned in the macaw requirements document.
 COPY requirements.txt requirements.txt
@@ -59,8 +47,8 @@ ARG download_drqa_model=false
 RUN if $download_drqa_model ; then cd DrQA && ./download.sh ; fi
 
 # Install MongoDB server https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
-RUN wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
-RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+RUN wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | apt-key add -
+RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-5.0.list
 RUN apt-get update && apt-get install -y mongodb-org
 
 # Create the MongoDB data directory.
@@ -79,7 +67,7 @@ ENV PYTHONPATH="$PYTHONPATH:/usr/src/app"
 # Install Macaw.
 RUN python3 setup.py install
 
-# To fix async keyword issue in python3.7 https://github.com/pexpect/pexpect/issues/453
+# To fix async keyword issue in python3.7+ https://github.com/pexpect/pexpect/issues/453
 RUN pip3 install -Iv pexpect==4.8.0
 
 # Create index
