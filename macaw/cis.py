@@ -5,11 +5,14 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
 from abc import ABC, abstractmethod
+from datetime import datetime
+
 from func_timeout import FunctionTimedOut
 
 from macaw import interface, util
-from macaw.core.interaction_handler.user_requests_db import InteractionDB
+from macaw.core.interaction_handler import CurrentAttributes
 from macaw.core.interaction_handler.msg import Message
+from macaw.core.interaction_handler.user_requests_db import InteractionDB
 
 
 class CIS(ABC):
@@ -22,26 +25,34 @@ class CIS(ABC):
             params(dict): A dict containing some parameters.
         """
         self.params = params
-        if params['mode'] == 'live':
-            self.params['live_request_handler'] = self.live_request_handler
-            self.msg_db = InteractionDB(host=self.params['interaction_db_host'],
-                                        port=self.params['interaction_db_port'],
-                                        dbname=self.params['interaction_db_name'])
-        elif params['mode'] == 'exp':
-            self.params['experimental_request_handler'] = self.request_handler_func
+        if params["mode"] == "live":
+            self.params["live_request_handler"] = self.live_request_handler
+            self.msg_db = InteractionDB(
+                host=self.params["interaction_db_host"],
+                port=self.params["interaction_db_port"],
+                dbname=self.params["interaction_db_name"],
+            )
+            self.params["curr_attrs"] = self.curr_attrs = CurrentAttributes()
+        elif params["mode"] == "exp":
+            self.params["experimental_request_handler"] = self.request_handler_func
 
         self.interface = interface.get_interface(params)
         try:
             self.nlp_util = util.NLPUtil(self.params)
-            self.params['nlp_util'] = self.nlp_util
+            self.params["nlp_util"] = self.nlp_util
         except Exception as ex:
-            self.params['logger'].warning('WARNING: There is a problem with setting up the NLP utility module. ' + str(ex))
-        self.timeout = self.params['timeout'] if 'timeout' in self.params else -1
+            self.params["logger"].warning(
+                "WARNING: There is a problem with setting up the NLP utility module. "
+                + str(ex)
+            )
+        self.timeout = self.params["timeout"] if "timeout" in self.params else -1
 
     def live_request_handler(self, msg):
         try:
             # load conversation from the database and add the current message to the database
-            conv = [msg] + self.msg_db.get_conv_history(user_id=msg.user_id, max_time=10 * 60 * 1000, max_count=10)
+            conv = [msg] + self.msg_db.get_conv_history(
+                user_id=msg.user_id, max_time=10*60*1000, max_count=10
+            )
             self.msg_db.insert_one(msg)
 
             # output_msg = func_timeout(self.timeout, self.request_handler_func, args=[conv])
@@ -50,13 +61,21 @@ class CIS(ABC):
             return output_msg
 
         except FunctionTimedOut:
+            print(f"live_request_handler method timed out.")
             msg_info = dict()
-            msg_info['msg_id'] = msg.msg_info['msg_id']
-            msg_info['msg_source'] = 'system'
-            msg_info['msg_type'] = 'error'
-            text = 'Time out, no result!'
-            timestamp = util.current_time_in_milliseconds()
-            error_msg = Message(msg.user_interface, msg.user_id, msg.user_info, msg_info, text, timestamp)
+            msg_info["msg_id"] = msg.msg_info["msg_id"]
+            msg_info["msg_source"] = "system"
+            msg_info["msg_type"] = "error"
+            text = "Time out, no result!"
+            timestamp = datetime.utcnow()
+            error_msg = Message(
+                user_interface=msg.user_interface,
+                user_id=msg.user_id,
+                user_info=msg.user_info,
+                msg_info=msg_info,
+                text=text,
+                timestamp=timestamp,
+            )
             self.msg_db.insert_one(error_msg)
             return error_msg
 
@@ -77,7 +96,7 @@ class CIS(ABC):
     #                       user_info=user_info,
     #                       msg_info=msg_info,
     #                       text=str_list[i],
-    #                       timestamp=util.current_time_in_milliseconds())
+    #                       timestamp=datetime.utcnow())
     #         conv_list.append(msg)
     #     conv_list.reverse()
     #

@@ -5,7 +5,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 import macaw.core.retrieval.bing_api
 import macaw.core.retrieval.tantivy
-from macaw.core.retrieval import search_engine, query_generation
+from macaw.core.retrieval import query_generation
 
 
 def get_retrieval_model(params):
@@ -21,23 +21,33 @@ def get_retrieval_model(params):
     Returns:
         A Retrieval object for document retrieval.
     """
-    params['logger'].info('The query generation model for retrieval: ' + params['query_generation'])
-    if params['query_generation'] == 'simple':
+    params["logger"].info(
+        "The query generation model for retrieval: " + params["query_generation"]
+    )
+    if params["query_generation"] == "simple":
         q_generation = query_generation.SimpleQueryGeneration(params)
     else:
-        raise Exception('The requested query generation model does not exist!')
+        raise Exception("The requested query generation model does not exist!")
 
-    params['logger'].info('The search engine for retrieval: ' + params['search_engine'])
-    if params['search_engine'] == 'tantivy':
-        return macaw.core.retrieval.tantivy.Tantivy({'query_generation': q_generation,
-                                                     'path': params['search_engine_path'],
-                                                     'load': True,
-                                                     'results_requested': params['results_requested'],
-                                                     'logger': params['logger']})
-    elif params['search_engine'] == 'bing':
-        return macaw.core.retrieval.bing_api.BingWebSearch({'query_generation': q_generation,
-                                                            'bing_key': params['bing_key'],
-                                                            'results_requested': params['results_requested'],
-                                                            'logger': params['logger']})
+    params["logger"].info("The search engine for retrieval: " + params["search_engine"])
+    if params["search_engine"] == "tantivy":
+        return macaw.core.retrieval.tantivy.Tantivy(
+            {
+                "query_generation": q_generation,
+                "path": params["search_engine_path"],
+                "load": True,
+                "results_requested": params["results_requested"],
+                "logger": params["logger"],
+            }
+        )
+    elif params["search_engine"] == "bing":
+        return macaw.core.retrieval.bing_api.BingWebSearch(
+            {
+                "query_generation": q_generation,
+                "bing_key": params["bing_key"],
+                "results_requested": params["results_requested"],
+                "logger": params["logger"],
+            }
+        )
     else:
         raise Exception(f'{params["search_engine"]} retrieval model does not exist!')

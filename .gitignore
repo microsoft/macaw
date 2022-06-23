@@ -103,8 +103,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# PyCharm stuff
+# IDE folders
 .idea/
+.vscode/
 
 # Dependencies
 DrQA/
