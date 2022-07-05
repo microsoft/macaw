@@ -5,6 +5,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com), George Wei (gzwei@umass.edu)
 """
 
 from datetime import datetime, timedelta
+from typing import List
 
 from pymongo import MongoClient
 
@@ -31,7 +32,7 @@ class InteractionDB:
         )
         return self.dict_list_to_msg_list(self.col.find({}))
 
-    def get_conv_history(self, user_id, max_time, max_count):
+    def get_conv_history(self, user_id, max_time, max_count) -> List[Message]:
         if max_time is None:
             res = self.col.find({"user_id": user_id}, sort=[("timestamp", -1)])
         else:
@@ -53,9 +54,10 @@ class InteractionDB:
         self.client.close()
 
     @staticmethod
-    def dict_list_to_msg_list(msg_dict_list):
+    def dict_list_to_msg_list(msg_dict_list) -> List[Message]:
         msg_list = []
         for msg_dict in msg_dict_list:
             msg_dict.pop("_id")
-            msg_list.append(Message.from_dict(msg_dict=msg_dict))
+            message = Message.from_dict(msg_dict=msg_dict)
+            msg_list.append(message)
         return msg_list

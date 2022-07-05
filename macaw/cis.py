@@ -3,16 +3,20 @@ The CIS class.
 
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
-
 from abc import ABC, abstractmethod
 from datetime import datetime
+from typing import List
 
 from func_timeout import FunctionTimedOut
 
 from macaw import interface, util
+from macaw.core.dialogue_manager.dialogue_manager import DialogManager
+from macaw.core.input_handler.action_detection import RequestDispatcher
 from macaw.core.interaction_handler import CurrentAttributes
 from macaw.core.interaction_handler.msg import Message
 from macaw.core.interaction_handler.user_requests_db import InteractionDB
+from macaw.core.nlp_pipeline.nlp_pipeline import NlpPipeline
+from macaw.core.output_handler import naive_output_selection
 
 
 class CIS(ABC):
@@ -27,16 +31,23 @@ class CIS(ABC):
         self.params = params
         if params["mode"] == "live":
             self.params["live_request_handler"] = self.live_request_handler
-            self.msg_db = InteractionDB(
-                host=self.params["interaction_db_host"],
-                port=self.params["interaction_db_port"],
-                dbname=self.params["interaction_db_name"],
-            )
-            self.params["curr_attrs"] = self.curr_attrs = CurrentAttributes()
         elif params["mode"] == "exp":
-            self.params["experimental_request_handler"] = self.request_handler_func
+            self.params["experimental_request_handler"] = self.file_request_handler
 
+        self.msg_db = InteractionDB(
+            host=self.params["interaction_db_host"],
+            port=self.params["interaction_db_port"],
+            dbname=self.params["interaction_db_name"],
+        )
+
+        self.params["curr_attrs"] = self.curr_attrs = CurrentAttributes()
+        self.params["actions"] = self.generate_actions()
         self.interface = interface.get_interface(params)
+        self.request_dispatcher = RequestDispatcher(self.params)
+        self.output_selection = naive_output_selection.NaiveOutputProcessing({})
+        self.dialogue_manager = DialogManager()
+        self.nlp_pipeline = NlpPipeline(params.get("nlp_modules", {}))
+
         try:
             self.nlp_util = util.NLPUtil(self.params)
             self.params["nlp_util"] = self.nlp_util
@@ -47,16 +58,19 @@ class CIS(ABC):
             )
         self.timeout = self.params["timeout"] if "timeout" in self.params else -1
 
-    def live_request_handler(self, msg):
+    def live_request_handler(self, msg: Message):
         try:
-            # load conversation from the database and add the current message to the database
-            conv = [msg] + self.msg_db.get_conv_history(
+            # load conversation from the database.
+            history = self.msg_db.get_conv_history(
                 user_id=msg.user_id, max_time=10*60*1000, max_count=10
             )
-            self.msg_db.insert_one(msg)
+
+            conv = [msg] + history
 
             # output_msg = func_timeout(self.timeout, self.request_handler_func, args=[conv])
             output_msg = self.request_handler_func(conv)
+
+            # Save the output and conversation state in DB.
             self.msg_db.insert_one(output_msg)
             return output_msg
 
@@ -79,37 +93,18 @@ class CIS(ABC):
             self.msg_db.insert_one(error_msg)
             return error_msg
 
-    # def experimental_request_handler(self, str_list):
-    #     if not isinstance(str_list, list):
-    #         raise Exception('The input should be a list!')
-    #
-    #     conv_list = []
-    #     for i in range(len(str_list)):
-    #         if not isinstance(str_list[i], str):
-    #             raise Exception('Each element of the input should be a string!')
-    #         user_info = {'first_name': 'NONE'}
-    #         msg_info = {'msg_id': -1,
-    #                     'msg_type': 'command' if str_list[i].startswith('#') else 'text',
-    #                     'msg_source': 'user'}
-    #         msg = Message(user_interface='NONE',
-    #                       user_id=-1,
-    #                       user_info=user_info,
-    #                       msg_info=msg_info,
-    #                       text=str_list[i],
-    #                       timestamp=datetime.utcnow())
-    #         conv_list.append(msg)
-    #     conv_list.reverse()
-    #
-    #     if self.timeout > 0:
-    #         output_msg = func_timeout(self.timeout, self.request_handler_func, args=[conv_list])
-    #     else:
-    #         output_msg = self.request_handler_func(conv_list)
-    #     return output_msg
+    def file_request_handler(self, msg: Message):
+        # Just delegate the call to the live request handler.
+        return self.live_request_handler(msg)
 
     @abstractmethod
-    def request_handler_func(self, conv_list):
+    def request_handler_func(self, conv_list: List[Message]) -> Message:
         pass
 
     @abstractmethod
     def run(self):
+        pass
+
+    @abstractmethod
+    def generate_actions(self) -> dict:
         pass

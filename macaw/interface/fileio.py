@@ -5,6 +5,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
 import time
+from datetime import datetime
 
 from macaw.core.interaction_handler.msg import Message
 from macaw.interface.interface import Interface
@@ -20,27 +21,24 @@ class FileioInterface(Interface):
         with open(self.params["input_file_path"]) as input_file:
             for line in input_file:
                 str_list = line.strip().split("\t")
-                if len(str_list) < 2:
+                if len(str_list) != 2:
                     raise Exception(
-                        "Each input line should contain at least 2 elements: a query ID and a query text."
+                        f"Each input line should contain at least 2 elements: a query ID and a query text."
+                        f"Invalid line: {line}"
                     )
                 qid = str_list[0]
 
-                conv_list = []
-                for i in range(1, len(str_list)):
-                    user_info = {"first_name": "NONE"}
-                    msg_info = {"msg_id": qid, "msg_type": "text", "msg_source": "user"}
-                    msg = Message(
-                        user_interface="NONE",
-                        user_id=-1,
-                        user_info=user_info,
-                        msg_info=msg_info,
-                        text=str_list[i],
-                        timestamp=-1,
-                    )
-                    conv_list.append(msg)
-                conv_list.reverse()
-                output_msg = self.params["experimental_request_handler"](conv_list)
+                user_info = {"first_name": "NONE"}
+                msg_info = {"msg_id": qid, "msg_type": "text", "msg_source": "user"}
+                msg = Message(
+                    user_interface="fileio",
+                    user_id=-1,
+                    user_info=user_info,
+                    msg_info=msg_info,
+                    text=str_list[1],
+                    timestamp=datetime.utcnow(),
+                )
+                output_msg = self.params["experimental_request_handler"](msg)
                 self.result_presentation(
                     output_msg, {"output_file": output_file, "qid": qid}
                 )
@@ -74,7 +72,7 @@ class FileioInterface(Interface):
                 output_file.write(
                     qid
                     + "\t"
-                    + output_msg.text.replace("\n", " ").replace("\t", " ")
+                    + output_msg.response.replace("\n", " ").replace("\t", " ")
                     + "\n"
                 )
             else:

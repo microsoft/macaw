@@ -35,24 +35,24 @@ class StdioInterface(Interface):
                 msg = Message(
                     user_interface="stdio",
                     user_id=-1,
-                    user_info=user_info,
-                    msg_info=msg_info,
                     text=request,
                     timestamp=datetime.utcnow(),
+                    user_info=user_info,
+                    msg_info=msg_info,
                 )
                 output = self.params["live_request_handler"](msg)
                 self.result_presentation(output, {})
             except Exception as ex:
                 traceback.print_exc()
 
-    def result_presentation(self, response_msg, params):
+    def result_presentation(self, response_msg: Message, params: dict):
         try:
             print("THE RESPONSE STARTS")
             print(
                 "----------------------------------------------------------------------"
             )
             if response_msg.msg_info["msg_type"] == "text":
-                print(response_msg.text)
+                print(response_msg.response)
             elif response_msg.msg_info["msg_type"] == "options":
                 for (option_text, option_data, output_score) in response_msg.msg_info[
                     "options"

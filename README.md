@@ -70,7 +70,7 @@ run using other settings, appropriate changes should be done.
 The first step is to install [Docker](https://docs.docker.com/engine/install/) in your system. Then continue with the
 below steps.
 
-#### Create the build
+### Create the build
 
 To reduce the size of the build, we can keep certain data outside the Docker container and mount it
 using [volumes](https://docs.docker.com/storage/volumes/).
@@ -97,7 +97,7 @@ docker build --build-arg download_stanford_corenlp=true --build-arg download_drq
 
 _Note: To make sure that the Docker container builds without modification, an x86_64/amd64 system is required. If you have an arm64 device, then add the flag `--platform linux/amd64` to the build command._
 
-#### Run the application
+### Run the application
 
 If you downloaded certain data locally, then use Docker volumes to mount local directory to Docker container. You need
 to provide the local directory path during runtime. Run the command from project root.
@@ -124,10 +124,28 @@ and remove the container when the application exits (`--rm`). After installing a
 runs `scripts/start.sh`
 which first starts MongoDB server in a separate thread and then runs `live_main.py`.
 
-_Note: Similarly to requiring to requiring the additional flag of `--platform linux/amd64` to build the Docker container with an arm64 machine, running said container also requires the same flag.
+_Note: Similar to requiring the additional flag of `--platform linux/amd64` to build the Docker container with an arm64 machine, running said container also requires the same flag.
 :warning: **The performance of the container under this emulation will be incredibly poor. If possible, use a x86_64/amd64 system**._
 
-#### ssh into the container
+#### Run with file input
+
+To avoid typing the input every time, you can provide an input file and get output in an output file. We need to mount
+the directory containing the data.
+
+```commandline
+docker build -t macaw . && docker run --rm -i --name=macaw_test_container \
+-v <path/to/DrQA/data>:/usr/src/app/DrQA/data \
+-v $("pwd")/stanford-corenlp-full-2017-06-09:/usr/src/app/stanford-corenlp-full-2017-06-09 \
+-v $("pwd")/data:/usr/src/app/data \
+macaw
+```
+
+Also update the command inside `scripts/start.sh` file to
+```commandline
+python3 macaw/live_main.py --mode exp --interface fileio
+```
+
+### ssh into the container
 
 While the application is running, we can go inside the container to see the contents (directory structure, Tantivy index,
 etc.).
@@ -136,7 +154,7 @@ etc.).
 docker exec -it macaw_test_container /bin/bash
 ```
 
-#### Updating TREC data for Tantivy
+### Updating TREC data for Tantivy
 
 Tantivy index is created using the document stored in `trec_documents/` directory. It has some default data. To create a
 bigger index, download the entire data from [archive](https://archive.org/details/trec-ir) and put it in trec_documents.
