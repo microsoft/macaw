@@ -1,17 +1,14 @@
-"""
-The CIS class.
-
-Authors: Hamed Zamani (hazamani@microsoft.com)
-"""
 from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List
+import logging
 
 from func_timeout import FunctionTimedOut
 
+from core.response.handler import ResponseGeneratorHandler
 from macaw import interface, util
 from macaw.core.dialogue_manager.dialogue_manager import DialogManager
-from macaw.core.input_handler.action_detection import RequestDispatcher
+from macaw.core.response.action_detection import RequestDispatcher
 from macaw.core.interaction_handler import CurrentAttributes
 from macaw.core.interaction_handler.msg import Message
 from macaw.core.interaction_handler.user_requests_db import InteractionDB
@@ -40,21 +37,22 @@ class CIS(ABC):
             dbname=self.params["interaction_db_name"],
         )
 
+        self.logger = logging.getLogger("MacawLogger")
         self.params["curr_attrs"] = self.curr_attrs = CurrentAttributes()
         self.params["actions"] = self.generate_actions()
         self.interface = interface.get_interface(params)
         self.request_dispatcher = RequestDispatcher(self.params)
         self.output_selection = naive_output_selection.NaiveOutputProcessing({})
         self.dialogue_manager = DialogManager()
-        self.nlp_pipeline = NlpPipeline(params.get("nlp_modules", {}))
+        self.nlp_pipeline = NlpPipeline(params.get("nlp_models", {}))
+        self.response_generator_handler = ResponseGeneratorHandler(params.get("response_generator_models", {}))
 
         try:
             self.nlp_util = util.NLPUtil(self.params)
             self.params["nlp_util"] = self.nlp_util
         except Exception as ex:
-            self.params["logger"].warning(
-                "WARNING: There is a problem with setting up the NLP utility module. "
-                + str(ex)
+            self.logger.warning(
+                f"There is a problem with setting up the NLP utility module. {type(ex)}, {ex}"
             )
         self.timeout = self.params["timeout"] if "timeout" in self.params else -1
 

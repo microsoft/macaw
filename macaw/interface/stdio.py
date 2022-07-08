@@ -18,6 +18,7 @@ class StdioInterface(Interface):
         self.msg_id = int(time.time())
 
     def run(self):
+        print(f"Inside StdioInterface run method.")
         while True:
             try:
                 request = input("ENTER YOUR COMMAND (type 'exit' to leave): ").strip()

@@ -1,0 +1,26 @@
+version: '3.4'
+services:
+  base-app:
+    build: ./
+    ports:
+      - "127.0.0.1:8000:80"
+    volumes:
+      - "/Users/amitgh/PycharmProjects/DrQA/data:/usr/src/app/DrQA/data"
+      - "/Users/amitgh/PycharmProjects/Maruna/macaw/stanford-corenlp-full-2017-06-09:/usr/src/app/stanford-corenlp-full-2017-06-09"
+      - "/Users/amitgh/PycharmProjects/Maruna/macaw/data:/usr/src/app/data"
+    deploy:
+      resources:
+        limits:
+          memory: 5gb
+  nlp-pipeline-app-flask:
+    build: ./macaw/docker/flask_app
+    ports:
+      - "127.0.0.1:8001:80"
+  nlp-pipeline-app-ic:
+    build: ./macaw/docker/ic_app
+    ports:
+      - "127.0.0.1:8002:80"
+  response-generator-app-qa:
+    build: ./macaw/docker/qa_app
+    ports:
+      - "127.0.0.1:8003:80"

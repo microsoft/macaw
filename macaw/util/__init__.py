@@ -6,10 +6,14 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 
 import json
 
+import backoff as backoff
 from stanfordcorenlp import StanfordCoreNLP
 
 
 class NLPUtil:
+    @backoff.on_exception(backoff.expo,
+                          Exception,
+                          max_tries=3)
     def __init__(self, params):
         """
         A simple NLP helper class.

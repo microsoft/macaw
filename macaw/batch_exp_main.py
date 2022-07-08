@@ -6,7 +6,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 
 from macaw.cis import CIS
 from macaw.core import mrc, retrieval
-from macaw.core.input_handler.action_detection import RequestDispatcher
+from macaw.core.response.action_detection import RequestDispatcher
 from macaw.core.output_handler import naive_output_selection
 
 

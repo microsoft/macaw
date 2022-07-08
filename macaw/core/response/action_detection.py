@@ -6,7 +6,7 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 
 import multiprocessing
 
-from macaw.core.input_handler import actions
+from macaw.core.response import actions
 
 
 class PreActionRequestDispatcher:
@@ -99,7 +99,10 @@ class RequestDispatcher:
         manager = multiprocessing.Manager()
         action_results = manager.dict()
         for action in self.params['actions']:
-            p = multiprocessing.Process(target=actions.run_action, args=[action, conv_list.copy(), self.params, action_results])
+            p = multiprocessing.Process(
+                target=actions.run_action,
+                args=[action, conv_list.copy(), self.params, action_results]
+            )
             action_processes.append(p)
             p.start()
 

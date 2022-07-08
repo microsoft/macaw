@@ -68,7 +68,8 @@ class FileioInterface(Interface):
                     "Therefore, the message type should be options."
                 )
         elif self.params["output_format"] == "text":
-            if output_msg.msg_info["msg_type"] == "text":
+            msg_type = output_msg.msg_info["msg_type"]
+            if msg_type == "text":
                 output_file.write(
                     qid
                     + "\t"
@@ -77,7 +78,7 @@ class FileioInterface(Interface):
                 )
             else:
                 raise Exception(
-                    "text output format is only recognized for text outputs."
+                    f"Text output format is only recognized for text outputs. Found {msg_type}."
                 )
         else:
             raise Exception("Unknown output file format!")

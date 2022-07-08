@@ -3,6 +3,8 @@ The retrieval module init.
 
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
+import logging
+
 import macaw.core.retrieval.bing_api
 import macaw.core.retrieval.tantivy
 from macaw.core.retrieval import query_generation
@@ -12,7 +14,7 @@ def get_retrieval_model(params):
     """
     This method returns the Retrieval class requested in the parameter dict.
     Args:
-        params(dict): A dict of parameters. In this method, the parameters 'logger' and 'query_generation', and
+        params(dict): A dict of parameters. In this method, the parameters 'query_generation', and
         'search_engine' are required. Based on the requested retrievel model, some more parameters may be mandatory.
         Currently, Macaw serves two different search engines. One is based on indri (http://lemurproject.org/indri.php),
         and the other one is the Microsoft Bing API. If you want to retrieve results from your own document collection,
@@ -21,7 +23,8 @@ def get_retrieval_model(params):
     Returns:
         A Retrieval object for document retrieval.
     """
-    params["logger"].info(
+    logger = logging.getLogger("MacawLogger")
+    logger.info(
         "The query generation model for retrieval: " + params["query_generation"]
     )
     if params["query_generation"] == "simple":
@@ -29,7 +32,7 @@ def get_retrieval_model(params):
     else:
         raise Exception("The requested query generation model does not exist!")
 
-    params["logger"].info("The search engine for retrieval: " + params["search_engine"])
+    logger.info("The search engine for retrieval: " + params["search_engine"])
     if params["search_engine"] == "tantivy":
         return macaw.core.retrieval.tantivy.Tantivy(
             {
@@ -37,7 +40,7 @@ def get_retrieval_model(params):
                 "path": params["search_engine_path"],
                 "load": True,
                 "results_requested": params["results_requested"],
-                "logger": params["logger"],
+                "logger": logger,
             }
         )
     elif params["search_engine"] == "bing":
@@ -46,7 +49,7 @@ def get_retrieval_model(params):
                 "query_generation": q_generation,
                 "bing_key": params["bing_key"],
                 "results_requested": params["results_requested"],
-                "logger": params["logger"],
+                "logger": logger,
             }
         )
     else:

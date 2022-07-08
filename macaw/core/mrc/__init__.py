@@ -3,6 +3,7 @@ The MRC module init.
 
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
+import logging
 
 from macaw.core.mrc import drqa_mrc
 
@@ -17,7 +18,8 @@ def get_mrc_model(params):
     Returns:
         An MRC object for machine reading comprehension.
     """
-    params['logger'].info('The MRC model for QA: ' + params['mrc'])
+    logger = logging.getLogger("MacawLogger")
+    logger.info('The MRC model for QA: ' + params['mrc'])
     if params['mrc'] == 'drqa':
         return drqa_mrc.DrQA(params)
     else:

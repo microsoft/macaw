@@ -8,3 +8,5 @@ stanfordcorenlp
 google-cloud-texttospeech
 tantivy
 pymongo
+backoff
+deepmultilingualpunctuation

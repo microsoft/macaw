@@ -9,4 +9,6 @@ echo "MongoDB started successfully."
 echo "This is the python version: $(python3 --version)"
 
 # Start the main application.
-python3 macaw/live_main.py --mode live --interface stdio
+python3 macaw/live_main.py --mode exp --interface fileio
+# Use the below command for terminal IO.
+#python3 macaw/live_main.py --mode live --interface stdio

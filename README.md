@@ -160,6 +160,40 @@ Tantivy index is created using the document stored in `trec_documents/` director
 bigger index, download the entire data from [archive](https://archive.org/details/trec-ir) and put it in trec_documents.
 Docker will copy it during build time and create a new index.
 
+## Running entire Macuna application
+
+Using `docker compose` we can start the main application and all other supporting docker containers (nlp pipeline
+applications and remote modules) at once. This does not work with stdio mode as docker compose does not support
+terminal input. Run the below command.
+
+```commandline
+docker compose build && docker compose up
+```
+
+To run different containers independently or to support terminal input, run the below commands in order.
+
+First, build the application.
+
+```commandline
+docker compose build
+```
+
+Second, start all the supporting remote modules. Make sure to explicitly provide port and container names. This can be
+found from the `docker-compose.yml` file.
+
+```commandline
+docker compose run --rm -p "127.0.0.1:8001:80" --name nlp-pipeline-app-flask nlp-pipeline-app-flask
+docker compose run --rm -p "127.0.0.1:8002:80" --name nlp-pipeline-app-ic nlp-pipeline-app-ic
+docker compose run --rm -p "127.0.0.1:8003:80" --name response-generator-app-qa response-generator-app-qa
+```
+
+Third, run the main application which has stdio (or it can also have fileio). For stdio update the flags in `start.sh`
+with `--mode live --interface stdio`.
+
+```commandline
+docker compose run --rm base-app
+```
+
 ## Local Setup
 
 To setup the package locally without using Docker, follow the below instructions.

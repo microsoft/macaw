@@ -1,4 +1,4 @@
-q1	who is the president of japan?
+q1	who is the president of Japan?
 q2	when did the gulf war start?
 q3	what rights did the kingdom restore with israel?
 q4	when did jordan regained sovereignty over its territories?
