@@ -18,5 +18,5 @@ class Interface(ABC):
         pass
 
     @abstractmethod
-    def result_presentation(self, response_msg: Message, params: dict):
+    def result_presentation(self, response_msg: Message, additional_params: dict):
         pass

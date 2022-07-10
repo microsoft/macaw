@@ -159,12 +159,12 @@ class TelegramBot(Interface):
         except Exception as ex:
             traceback.print_exc()
 
-    def result_presentation(self, response_msg, params):
+    def result_presentation(self, response_msg, additional_params):
         """This method produces an appropriate response to be sent to the client."""
         try:
             if response_msg is None:
                 return
-            update = params["update"]
+            update = additional_params["update"]
             if response_msg.msg_info["msg_type"] == "text":
                 if update.message is not None:
                     update.message.reply_text(response_msg.text[: self.MAX_MSG_LEN])

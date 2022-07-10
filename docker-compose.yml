@@ -16,6 +16,10 @@ services:
     build: ./macaw/docker/flask_app
     ports:
       - "127.0.0.1:8001:80"
+    deploy:
+      resources:
+        limits:
+          memory: 100mb
   nlp-pipeline-app-ic:
     build: ./macaw/docker/ic_app
     ports:
@@ -24,3 +28,7 @@ services:
     build: ./macaw/docker/qa_app
     ports:
       - "127.0.0.1:8003:80"
+    deploy:
+      resources:
+        limits:
+          memory: 100mb

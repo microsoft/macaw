@@ -83,4 +83,6 @@ class Message:
                 value_ret = value.__dict__
             elif isinstance(value, DialogManager):
                 value_ret = value.encode()
+            elif isinstance(value, datetime):
+                value_ret = str(value)
             yield attr, value_ret

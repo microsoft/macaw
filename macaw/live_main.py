@@ -71,6 +71,7 @@ class ConvQA(CIS):
         conv_list[0].msg_info = output_msg.msg_info
         conv_list[0].response = output_msg.response
         conv_list[0].timestamp = output_msg.timestamp
+        conv_list[0].actions_result = rg_output
 
         return conv_list[0]
 
@@ -108,9 +109,12 @@ if __name__ == "__main__":
     # These are interface parameters. They are interface specific.
     interface_params = {
         "interface": args.interface,  # interface can be 'telegram' or 'stdio' for live mode, and 'fileio'
-        # for experimental mode.
+
+        # for experimental mode with fileio interface.
         "input_file_path": "/usr/src/app/data/file_input.txt",
         "output_file_path": "/usr/src/app/data/file_output.txt",
+
+        "verbose_output_file_path": "/usr/src/app/data/file_output_verbose.txt",
         "output_format": "text",
         "bot_token": "YOUR_TELEGRAM_BOT_TOKEN",  # Telegram bot token.
         # 'asr_model': 'google',  # The API used for speech recognition.

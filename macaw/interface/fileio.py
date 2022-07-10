@@ -3,7 +3,7 @@ The FileIO interface (for experimental batch interactions).
 
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
-
+import json
 import time
 from datetime import datetime
 
@@ -17,8 +17,9 @@ class FileioInterface(Interface):
         self.msg_id = int(time.time())
 
     def run(self):
-        output_file = open(self.params["output_file_path"], "w+")
-        with open(self.params["input_file_path"]) as input_file:
+        with open(self.params["output_file_path"], "w+") as output_file_handler, \
+                open(self.params["verbose_output_file_path"], "w+") as verbose_file_handler, \
+                open(self.params["input_file_path"]) as input_file:
             for line in input_file:
                 str_list = line.strip().split("\t")
                 if len(str_list) != 2:
@@ -40,19 +41,35 @@ class FileioInterface(Interface):
                 )
                 output_msg = self.params["experimental_request_handler"](msg)
                 self.result_presentation(
-                    output_msg, {"output_file": output_file, "qid": qid}
+                    output_msg,
+                    {
+                        "qid": qid,
+                        "output_file_handler": output_file_handler,
+                        "verbose_file_handler": verbose_file_handler
+                    }
                 )
-        output_file.close()
 
-    def result_presentation(self, output_msg, params):
-        qid = params["qid"]
-        output_file = params["output_file"]
+    def result_presentation(self, response_msg: Message, additional_params: dict):
+        """
+        This method writes the result of this turn into output files. Files are already opened before calling this
+        method and handlers passed in as arguments.
+
+        response_msg: the result message generated for this turn.
+        additional_params: dict having params required by this method not present in the self.params class variable.
+        """
+        qid = additional_params["qid"]
+        output_fh = additional_params["output_file_handler"]
+        verbose_fh = additional_params["verbose_file_handler"]
+
+        verbose_fh.write(json.dumps(dict(response_msg)))
+        verbose_fh.write("\n")
+
         if self.params["output_format"] == "trec":
-            if output_msg.msg_info["msg_type"] == "options":
+            if response_msg.msg_info["msg_type"] == "options":
                 for (i, (option_name, option_id, output_score)) in enumerate(
-                    output_msg.msg_info["options"]
+                    response_msg.msg_info["options"]
                 ):
-                    output_file.write(
+                    output_fh.write(
                         qid
                         + "\tQ0\t"
                         + option_name
@@ -68,12 +85,12 @@ class FileioInterface(Interface):
                     "Therefore, the message type should be options."
                 )
         elif self.params["output_format"] == "text":
-            msg_type = output_msg.msg_info["msg_type"]
+            msg_type = response_msg.msg_info["msg_type"]
             if msg_type == "text":
-                output_file.write(
+                output_fh.write(
                     qid
                     + "\t"
-                    + output_msg.response.replace("\n", " ").replace("\t", " ")
+                    + response_msg.response.replace("\n", " ").replace("\t", " ")
                     + "\n"
                 )
             else:
