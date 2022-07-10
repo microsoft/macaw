@@ -6,3 +6,7 @@ pydub
 python-telegram-bot==12.0.0
 stanfordcorenlp
 google-cloud-texttospeech
+tantivy
+pymongo
+backoff
+deepmultilingualpunctuation

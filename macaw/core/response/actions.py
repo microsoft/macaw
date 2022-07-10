@@ -4,9 +4,10 @@ All actions supported by CIS.
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
-from abc import ABC, abstractmethod
-from func_timeout import func_timeout, FunctionTimedOut
 import traceback
+from abc import ABC, abstractmethod
+
+from func_timeout import FunctionTimedOut, func_timeout
 
 
 class Action(ABC):
@@ -38,7 +39,7 @@ class RetrievalAction(Action):
         Returns:
             A list of Documents.
         """
-        return params['actions']['retrieval'].get_results(conv_list)
+        return params["actions"]["retrieval"].get_results(conv_list)
 
 
 class GetDocFromIndex(Action):
@@ -54,7 +55,7 @@ class GetDocFromIndex(Action):
         Returns:
             A list of Documents with a length of 1.
         """
-        return params['actions']['retrieval'].get_doc_from_index(params['doc_id'])
+        return params["actions"]["retrieval"].get_doc_from_index(params["doc_id"])
 
 
 class QAAction(Action):
@@ -73,12 +74,12 @@ class QAAction(Action):
         """
 
         doc_list = RetrievalAction.run(conv_list, params)
-        doc = ''
+        doc = ""
         for i in range(len(doc_list)):
             doc = doc_list[i].text
             if len(doc.strip()) > 0:
                 break
-        return params['actions']['qa'].get_results(conv_list, doc)
+        return params["actions"]["qa"].get_results(conv_list, doc)
 
 
 def run_action(action, conv_list, params, return_dict):
@@ -93,17 +94,21 @@ def run_action(action, conv_list, params, return_dict):
         return_dict(dict): A shared dict for all processes running this action. The actions' outputs should be added to
         this dict.
     """
-    if action == 'retrieval':
+    if action == "retrieval":
         action_func = RetrievalAction.run
-    elif action == 'qa':
+    elif action == "qa":
         action_func = QAAction.run
     else:
-        raise Exception('Unknown Action!')
+        raise Exception("Unknown Action!")
 
     try:
-        return_dict[action] = func_timeout(params['timeout'], action_func, args=[conv_list, params])
+        return_dict[action] = func_timeout(
+            params["timeout"], action_func, args=[conv_list, params]
+        )
     except FunctionTimedOut:
-        params['logger'].warning('The action "%s" did not respond in %d seconds.', action, params['timeout'])
+        params["logger"].warning(
+            'The action "%s" did not respond in %d seconds.', action, params["timeout"]
+        )
     except Exception:
         return_dict[action] = None
         traceback.print_exc()

@@ -3,15 +3,15 @@ The interactive CIS main file.
 
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
-
+import logging
 import multiprocessing
 
 from macaw import interface
 from macaw.core import retrieval
-from macaw.core.input_handler.action_detection import RequestDispatcher
+from macaw.core.response.action_detection import RequestDispatcher
 from macaw.core.interaction_handler.user_requests_db import InteractionDB
 from macaw.core.output_handler import naive_output_selection
-from macaw.util.logging import Logger
+from macaw.util.custom_logging import LoggerFactory
 
 
 class Seeker:
@@ -27,7 +27,7 @@ class Seeker:
             for more information on the required parameters.
         """
         self.params = params
-        self.logger = params['logger']
+        self.logger = logging.getLogger("MacawLogger")
         self.logger.info('Conversational Wirzard of Oz System... starting up...')
         self.wizard = None
         self.params['live_request_handler'] = self.live_request_handler
@@ -87,7 +87,7 @@ class Wizard:
             for more information on the required parameters.
         """
         self.params = params
-        self.logger = params['logger']
+        self.logger = logging.getLogger("MacawLogger")
         self.logger.info('Conversational Wirzard of Oz System... starting up...')
         self.params['live_request_handler'] = self.live_request_handler
         self.seeker = None
@@ -148,9 +148,9 @@ class Wizard:
 
 
 if __name__ == '__main__':
+    my_logger = LoggerFactory.create_logger({})
     basic_params = {'timeout': 15,  # timeout is in terms of second.
-                    'mode': 'live',  # mode can be either live or exp.
-                    'logger': Logger({})}  # for logging into file, pass the filepath to the Logger class.
+                    'mode': 'live'}  # mode can be either live or exp.
 
     # These are required database parameters if the mode is 'live'. The host and port of the machine hosting the
     # database, as well as the database name.
@@ -190,8 +190,8 @@ if __name__ == '__main__':
 
     seeker_params = {**basic_params, **db_params, **seeker_interface_params, **retrieval_params}
     wizard_params = {**basic_params, **db_params, **wizard_interface_params, **retrieval_params}
-    basic_params['logger'].info(seeker_params)
-    basic_params['logger'].info(wizard_params)
+    my_logger.info(seeker_params)
+    my_logger.info(wizard_params)
 
     seeker = Seeker(seeker_params)
     wizard = Wizard(wizard_params)
@@ -204,6 +204,6 @@ if __name__ == '__main__':
     seeker_process.start()
     wizard_process.start()
 
-    basic_params['logger'].info('Seeker Process ID: {}'.format(seeker_process.pid))
-    basic_params['logger'].info('Wizard Process ID: {}'.format(wizard_process.pid))
+    my_logger.info('Seeker Process ID: {}'.format(seeker_process.pid))
+    my_logger.info('Wizard Process ID: {}'.format(wizard_process.pid))
 

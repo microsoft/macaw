@@ -4,8 +4,8 @@ The query generation model for search engine.
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
-from abc import ABC, abstractmethod
 import string
+from abc import ABC, abstractmethod
 
 
 class QueryGeneration(ABC):
@@ -59,12 +59,14 @@ class SimpleQueryGeneration(QueryGeneration):
         """
         # q = ' '.join(msg.text for msg in conv_list)
         q = conv_list[0].text
-        if 'use_coref' in self.params and self.params['use_coref']:
+        if "use_coref" in self.params and self.params["use_coref"]:
             q_coref = self.get_query_coref(conv_list)
             for key in q_coref:
-                q += ' ' + ' '.join(q_coref[key])
+                q += " " + " ".join(q_coref[key])
 
-        q = q.translate(str.maketrans(string.punctuation, ' '*len(string.punctuation))).strip()
+        q = q.translate(
+            str.maketrans(string.punctuation, " " * len(string.punctuation))
+        ).strip()
 
         # print(q)
         return q
@@ -84,20 +86,20 @@ class SimpleQueryGeneration(QueryGeneration):
         """
         corenlp_coref_result = self.compute_corefs(conv_list)
         q_coref = dict()
-        last_index = len(corenlp_coref_result['sentences'])
-        for key in corenlp_coref_result['corefs']:
+        last_index = len(corenlp_coref_result["sentences"])
+        for key in corenlp_coref_result["corefs"]:
             has_coref = False
-            for item in corenlp_coref_result['corefs'][key]:
-                if item['sentNum'] == last_index:
+            for item in corenlp_coref_result["corefs"][key]:
+                if item["sentNum"] == last_index:
                     has_coref = True
-                    text = item['text']
+                    text = item["text"]
                     break
             if has_coref:
                 q_coref[text] = []
-                for item in corenlp_coref_result['corefs'][key]:
-                    if item['sentNum'] == last_index:
+                for item in corenlp_coref_result["corefs"][key]:
+                    if item["sentNum"] == last_index:
                         continue
-                    q_coref[text].append(item['text'])
+                    q_coref[text].append(item["text"])
         return q_coref
 
     def compute_corefs(self, conv_list):
@@ -115,15 +117,18 @@ class SimpleQueryGeneration(QueryGeneration):
         """
         conv_history = []
         for msg in reversed(conv_list):
-            if msg.msg_info['msg_source'] == 'user' and msg.msg_info['msg_type'] in ['text', 'voice']:
-                temp = msg.text if msg.text.endswith('?') else (msg.text + '?')
+            if msg.msg_info["msg_source"] == "user" and msg.msg_info["msg_type"] in [
+                "text",
+                "voice",
+            ]:
+                temp = msg.text if msg.text.endswith("?") else (msg.text + "?")
                 conv_history.append(temp)
             # elif msg.msg_info['msg_source'] == 'system' and msg.msg_info['msg_type'] == 'text' and len(msg.text.split()) < 30:
             #     temp = msg.text + '.'
             #     conv_history.append(temp)
         if len(conv_history) == 0:
-            raise Exception('The query generation model cannot generate any query! There should be a problem')
-        coref_results = self.params['nlp_util'].get_coref(' '.join(conv_history))
+            raise Exception(
+                "The query generation model cannot generate any query! There should be a problem"
+            )
+        coref_results = self.params["nlp_util"].get_coref(" ".join(conv_history))
         return coref_results
-
-

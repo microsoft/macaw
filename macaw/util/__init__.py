@@ -5,22 +5,15 @@ Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
 import json
-import time
 
+import backoff as backoff
 from stanfordcorenlp import StanfordCoreNLP
 
 
-def current_time_in_milliseconds():
-    """
-    A method that returns the current time in milliseconds.
-
-    Returns:
-        An int representing the current time in milliseconds.
-    """
-    return int(round(time.time() * 1000))
-
-
 class NLPUtil:
+    @backoff.on_exception(backoff.expo,
+                          Exception,
+                          max_tries=3)
     def __init__(self, params):
         """
         A simple NLP helper class.
@@ -29,11 +22,15 @@ class NLPUtil:
             params(dict): A dict containing some parameters.
         """
         self.params = params
-        self.corenlp = StanfordCoreNLP(self.params['corenlp_path'], quiet=False)
+        self.corenlp = StanfordCoreNLP(self.params["corenlp_path"], quiet=False)
 
         # Pre-fetching the required models.
-        props = {'annotators': 'coref', 'pipelineLanguage': 'en', 'ner.useSUTime': False}
-        self.corenlp.annotate('', properties=props)
+        props = {
+            "annotators": "coref",
+            "pipelineLanguage": "en",
+            "ner.useSUTime": False,
+        }
+        self.corenlp.annotate("", properties=props)
 
     def get_coref(self, text):
         """
@@ -44,7 +41,11 @@ class NLPUtil:
         Returns:
             A json object containing all co-reference resolutions extracted from the input text.
         """
-        props = {'annotators': 'coref', 'pipelineLanguage': 'en', 'ner.useSUTime': False}
+        props = {
+            "annotators": "coref",
+            "pipelineLanguage": "en",
+            "ner.useSUTime": False,
+        }
         result = json.loads(self.corenlp.annotate(text, properties=props))
 
         return result

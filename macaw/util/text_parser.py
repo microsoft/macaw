@@ -4,8 +4,9 @@ Some text parser for document cleaning.
 Authors: Hamed Zamani (hazamani@microsoft.com)
 """
 
-import justext
 from xml.etree import cElementTree as ElementTree
+
+import justext
 
 
 class XmlListConfig(list):
@@ -88,6 +89,7 @@ def xml_file_to_dict(xml_file):
 #     result = filter(visible, data)
 #     return ' '.join(result)
 
+
 def html_to_clean_text(html):
     """
     Converting an HTML document to clean text.
@@ -102,4 +104,4 @@ def html_to_clean_text(html):
     for paragraph in paragraphs:
         if not paragraph.is_boilerplate:
             clean_text_list.append(paragraph.text)
-    return '\n'.join(clean_text_list)
+    return "\n".join(clean_text_list)
